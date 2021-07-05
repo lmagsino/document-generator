@@ -1,0 +1,7 @@
+# package directories
+node_modules/
+
+# Temporary mac files
+.DS_Store
+
+.env
