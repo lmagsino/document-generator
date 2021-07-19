@@ -1,7 +1,9 @@
 # package directories
 node_modules/
+dist/
 
 # Temporary mac files
 .DS_Store
 
 .env
+
