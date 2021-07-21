@@ -28,7 +28,7 @@ class UsersService {
 
 
     // TODO: Save To Cloud storage
-    pdf.create(html).toStream(function(err, stream) {
+    pdf.create(html).toStream((e, stream) => {
       stream.pipe(fs.createWriteStream('businesscards.pdf'));
       const params = {
         Key: 'businesscards.pdf',
