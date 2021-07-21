@@ -9,16 +9,14 @@ const s3 = new aws.S3({
 });
 
 const compiled: ejs.TemplateFunction =
-  ejs.compile(fs.readFileSync('./test/businesscard.html', 'utf8'));
+    ejs.compile(fs.readFileSync('./test/businesscard.html', 'utf8'));
 
-const html : string = compiled({title: 'EJS', text: 'Hello, World!'});
+const html : string = compiled({ title: 'EJS', text: 'Hello, World!' });
 // const options: any = { format: 'Letter' };
 const s3Bucket: any = process.env.AWS_S3_BUCKET;
 
 class UsersService {
   async generatePdf() {
-
-
     // TODO: Save To Local
     // pdf.create(html, options).toFile('./businesscard.pdf', function(err:
     // any, res: any) {

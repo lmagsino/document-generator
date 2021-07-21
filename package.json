@@ -21,6 +21,7 @@
     "express": "^4.17.1",
     "express-winston": "^4.1.0",
     "html-pdf": "^3.0.1",
+    "tslint-config-airbnb-base": "^0.3.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
