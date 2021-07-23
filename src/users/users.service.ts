@@ -66,12 +66,11 @@ class UsersService {
   async retrievePdf() {
     const createPDF = async (htmlFile: string) => new Promise(((resolve, reject) => {
       pdf.create(htmlFile).toBuffer((_, buffer) => {
-        resolve(buffer.toString('base64'))
+        resolve(buffer.toString('base64'));
       });
     }));
 
     return await createPDF(compiledHtml);
-
   }
 }
 
