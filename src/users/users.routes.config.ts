@@ -19,6 +19,11 @@ export class UsersRoutes extends CommonRoutesConfig {
       res.status(SUCCESS_CODE).send(pdf);
     });
 
+    this.app.get('/users', async (_, res) => {
+      const pdf = await UsersService.retrievePdf();
+      res.status(SUCCESS_CODE).send(pdf);
+    });
+
     return this.app;
   }
 }

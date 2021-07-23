@@ -2,8 +2,6 @@ import fs from 'fs';
 import pdf from 'html-pdf';
 import ejs from 'ejs';
 import aws from 'aws-sdk';
-import util from 'util';
-import { rejects } from 'assert/strict';
 
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -63,6 +61,17 @@ class UsersService {
     }));
 
     return await createPDF(compiledHtml);
+  }
+
+  async retrievePdf() {
+    const createPDF = async (htmlFile: string) => new Promise(((resolve, reject) => {
+      pdf.create(htmlFile).toBuffer((_, buffer) => {
+        resolve(buffer.toString('base64'))
+      });
+    }));
+
+    return await createPDF(compiledHtml);
+
   }
 }
 
