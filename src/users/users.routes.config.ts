@@ -1,6 +1,6 @@
 import { CommonRoutesConfig } from '../common/common.routes.config';
-import UsersController from './users.controller';
 import express from 'express';
+import jwt from 'jwt-simple';
 
 import UsersService from './users.service';
 
@@ -19,10 +19,54 @@ export class UsersRoutes extends CommonRoutesConfig {
       res.status(SUCCESS_CODE).send(pdf);
     });
 
-    this.app.get('/users', async (_, res) => {
-      const pdf = await UsersService.retrievePdf();
+    // Get Base64 of pdf (URL Safe)
+    this.app.get('/get-encoded-pdf', async (req, res) => {
+      const pdf: any = await UsersService.retrievePdf();
+      const encodedPdf = encodeURIComponent(pdf);
+      res.status(SUCCESS_CODE).send(encodedPdf);
+    });
+
+    // Render pdf from Base64 (URL Safe)
+    this.app.get('/render-pdf/:id', async (req, res) => {
+      const pdf = Buffer.from(decodeURIComponent(req.params.id), 'base64');
+
+      res.header('Content-type', 'application/pdf');
       res.status(SUCCESS_CODE).send(pdf);
     });
+
+    // Get jwt of pdf (Base64)
+    this.app.get('/get-encoded-pdf-jwt', async (req, res) => {
+      const pdf: any = await UsersService.retrievePdf();
+      const token = jwt.encode({ pdfFile: pdf }, 'advance');
+      res.status(SUCCESS_CODE).send(token);
+    });
+
+    // Render pdf from jwt (Base64)
+    this.app.get('/render-pdf-jwt/:id', async (req, res) => {
+      const decoded = jwt.decode(req.params.id, 'advance');
+      const pdf = Buffer.from(decoded['pdfFile'], 'base64');
+
+      res.header('Content-type', 'application/pdf');
+      res.send(pdf);
+    });
+
+    // Get jwt of pdf params
+    this.app.post('/get-token', async (req, res) => {
+      const token = jwt.encode(req.body, 'advance');
+      res.status(SUCCESS_CODE).send(token);
+    });
+
+    // Render pdf from jwt
+    this.app.get('/render-pdf-token/:id', async (req, res) => {
+      const decoded = jwt.decode(req.params.id, 'advance');
+      console.log(decoded);
+      const pdfFile: any = await UsersService.retrievePdf();
+      const pdf = Buffer.from(pdfFile, 'base64');
+
+      res.header('Content-type', 'application/pdf');
+      res.send(pdf);
+    });
+
 
     return this.app;
   }
