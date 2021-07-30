@@ -1,0 +1,45 @@
+import { CommonRoutesConfig } from '../common/common.routes.config';
+// import ContractsController from './contracts.controller';
+import express from 'express';
+
+import ContractsService from './contracts.service';
+
+// import debug from 'debug';
+// const debugLog: debug.IDebugger = debug('app');
+const SUCCESS_CODE = 200;
+const ERROR_CODE = 500;
+const LIST_OF_CONTRACTS = [
+  'deduction_authorization', 'privacy_disclosure', 'privacy_disclosure_eperformax',
+  'food_panda_deduction', 'disclosure_statement', 'weekly_disclosure_statement',
+  'promissory_note', 'weekly_promissory_note'];
+
+export class ContractsRoutes extends CommonRoutesConfig {
+  constructor(app: express.Application) {
+    super(app, 'ContractsRoutes');
+  }
+
+  configureRoutes() {
+    this.app.post('/contracts', async (req, res) => {
+      const type = req.body.type;
+
+      const results = await ContractsService.generatePdf(req);
+      // Validations: // use controller for this?
+        // included in list of contracts,
+        // no payment_periods? -- returns error: undefined length
+        // no reference_code? -- name: 'undefined_food_panda_deduction.pdf'
+
+      if (LIST_OF_CONTRACTS.includes(type)) {
+        res.status(SUCCESS_CODE).send(results);
+      } else {
+        res.status(ERROR_CODE).send(results);
+      }
+    });
+
+    // this.app.get('/contracts', async (_, res) => {
+    //   const pdf = await ContractsService.retrievePdf();
+    //   res.status(SUCCESS_CODE).send(pdf);
+    // });
+
+    return this.app;
+  }
+}
