@@ -1,0 +1,239 @@
+<html>
+  <head>
+    <title><%= reference_code %> Promissory Note</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: "Open Sans";
+        font-size: 12px;
+        line-height: 1.4;
+        text-align: justify;
+      }
+      h1 {
+        font-size: 16px !important;
+      }
+      .centered {
+        text-align: center;
+      }
+      .compact {
+        margin: 0;
+      }
+      .right-aligned {
+        text-align: right
+      }
+      strong, .strong {
+        font-weight: 900;
+      }
+      .underline {
+        display: inline-block;
+        padding-right: 4em;
+        border-bottom: 1px solid black;
+        min-width: 10em;
+      }
+      .page-header {
+        margin-bottom: 2em;
+      }
+      .section {
+        margin-bottom: 2em;
+      }
+      .page-header .section-title {
+        margin-top: 2em;
+      }
+      .borrower-acknowledgement {
+        margin-bottom: 4em;
+      }
+      .name, .date {
+        text-align: center;
+        margin-bottom: 1em;
+      }
+      .name p, .date p {
+        margin: 0;
+      }
+      ol {
+        padding-left: 1.3em
+      }
+      ol.nested-list {
+        padding-left: 2.5em;
+        margin-top: 1em;
+      }
+      li {
+        margin-bottom: 1em;
+      }
+      .section-title {
+        text-decoration: underline;
+      }
+      .doc-number {
+        margin: 2em 0;
+      }
+      .centered .underline {
+        padding: 0 2.5em;
+      }
+      .signature {
+        margin-top: 3em;
+      }
+      .signature .name, .signature .date {
+        margin-bottom: 0;
+      }
+      .payment-schedule {
+        margin-top: 3em;
+      }
+      table.schedule {
+        width: 100%
+      }
+      table.schedule thead tr, table.schedule tbody tr:nth-child(even) {
+        background: lightgrey;
+      }
+      table.schedule td {
+        vertical-align: top;
+      }
+      ul.list-style-circle > li {
+        list-style-type: circle;
+        margin: 0;
+      }
+      .schedule.table {
+        font-size: 12px;
+      }
+    </style>    
+  </head>
+  <body>
+    <div class="ui container text">
+      <div class="page-header section centered">
+        <h1 class="section-title compact">PROMISSORY NOTE</h1>
+        <p class="compact strong">
+          (this "Note")
+        </p>
+        <p class="strong">PN. No. <%= reference_code %></p>
+      </div>
+      <div class="page-content">
+        <div class="section">
+          <p class="right-aligned">Date: <%= date_signed %></p>
+          <p>Principal: <%= amount_in_words %> (Php<%= amount %>)</p>
+          <p>FOR VALUE RECEIVED, I, <%= full_name %>, of legal age and a resident of <%= address %> (the <strong>"Borrower"</strong>) promise to pay <strong>ADVANCE TECH LENDING INC.</strong> (the <strong>"Lender"</strong>), the principal sum of <%= amount_in_words %> (Php<%= amount %>) (the <strong>"Loan Amount"</strong> or <strong>"Principal"</strong>), together with financing charges as set forth below.</p>
+          <p>
+            [FOR VALUE RECEIVED, I (the <strong>"Borrower"</strong>) promise to pay <strong>ADVANCE TECH LENDING INC.</strong> (the <strong>"Lender"</strong>), the <strong>Loan Amount</strong> or <strong>Principal</strong>, together with <strong>Interest</strong> thereon and financing charges as provided in my <strong>Personal Dashboard Account</strong>.]
+          </p>
+        </div>
+        <div class="section summary">
+          <p class="section-title strong centered">SUMMARY OF TERMS AND CONDITIONS OF LOAN TRANSACTION</p>
+          <ol>
+            <li>I hereby authorize (a) my Employer to debit or withdraw from my designated employee payroll account on behalf of Advance, (b) my Employer to transfer or remit the debited or deducted amount to Advance; and (c) for Advance to receive each payment due on each due date.  All payments are to be applied first to the payment of the accrued interest, then to the late payment penalty and late payment charges, when applicable, and lastly, to the balance of outstanding Principal.</li>
+            <li>
+              <p>Should I fail to pay the Principal of this Note at maturity or on demand, as the case may be, or any installments thereof or fail to pay any other obligation which I now or in the future owe to the Lender, for any reason whatsoever, then the entire Principal of this Note, including any accrued interests and other charges or penalties due on this Note, shall, at the option of the Lender and without necessity of notice to me, immediately become due and payable.
+              </p>
+              <p>Events of Default - Upon the happening of any of the following events, the Lender may at its option, accelerate maturity of this Note and the entire outstanding amount of this Note shall automatically become due and payable <span class="strong">on the immediate pay cycle</span> without demand or notice, likewise without further notice:</p>
+              <ol>
+                <li>Any interest or installment is not paid on due date;</li>
+                <li>The Borrower dies or becomes insolvent (i.e., could no longer pay the undersigned Borrower’s obligations as they fall due) or any proceeding for dissolution, insolvency, suspension of payment, receivership, voting trust, foreclosure, attachment, garnishment, execution or similar act, is filed or commenced against the undersigned Borrower/s;</li>
+                <li>In case of conviction for a criminal offense with final judgement carrying with it the penalty of civil interdiction affecting the undersigned Borrower;</li>
+                <li>In <span class="strong">case of resignation</span>, termination or severance from employment of the Borrower from his/her employer;</li>
+                <li>Any collateral promise/given as security for this Note is not delivered in full or is lost, destroyed or depreciates in value or cannot be immediately enforced;</li>
+                <li>Any provision of the agreement covering the collateral promised/given as security for the payment of this Note is violated or not complied with;</li>
+                <li>Upon the occurrence of any act or event which in the Lender's opinion, results in the impairment of the financial capacity of the Borrower;</li>
+                <li>Any representation or warranty, covenant or undertaking embodied in this Note, in the Corporate Salary Loan Application Form, or in other documents turns out to be untrue or ceases to be true in any material respect, or is violated or not complied.</li>
+              </ol>
+            </li>
+            <li>In case of any change in my payday schedule implemented by my employer, I hereby authorize the Lender to alter or modify the Loan Payment Schedule to coincide with my new payday schedule and hereby consent to such adjustment in schedule. Prior written notice on the adjustment of the Loan Payment Schedule will be given by the Lender, to take effect on the date indicated therein.</li>
+            <li>I agree that any amount advanced by the Lender in relation to this Note shall become part of the obligation due under this Note and non-payment thereof shall render the whole balance of the Note due and payable. This may be waived at the sole discretion of the Lender.</li>
+            <li>I hereby agree to pay a late payment penalty of ten percent (10%) monthly interest for missed or partial payment on the outstanding amount due until it has been fully repaid. This penalty shall accrue from date of default and may only be waived at the sole discretion of the Lender. The Lender has the sole discretion to refer the account to a third-party collection agency and the credit bureau beginning fifteen (15) days after the first day of missed payment, or once the account has been flagged as delinquent. All other expenses incurred due to my late payment, such as bank charges, shall be for my account. The said late payment penalty and penalty interest imposed on me is immediately due and payable, and may be collected by the Lender through any of the available payment channels as listed on the Lender’s website.</li>
+            <li>
+              I likewise hereby agree to pay the total amount incurred by the Lender in connection with the collection of any amount due from me under this Note, including the attorney’s fees, litigation expenses and costs of suit. In addition to the foregoing costs and charges, I further agree to pay by way of liquidated damages, the following amounts:
+              <ul class="list-style-circle">
+                <br />
+                <li>ten percent (10%) of the total amount due, including Principal, interest and charges, in case no suit is filed; or</li><br />
+                <li>twenty-five percent (25%) of total amount due, including Principal, interest and charges, in case a collection suit is filed in court.</li>
+              </ul>
+            </li>
+            <li>Any action to enforce payment of this Note may be brought by the Lender, at its sole option, in the proper court of Mandaluyong City or in any city or province where the Lender has a branch office, at the option of the Lender.</li>
+            <li>This Note and related contracts between the parties shall be governed by Philippine law.</li>
+            <li>I shall not assign, transfer or permit the assignment or transfer of any of the rights or obligations under this Note without the prior written consent of the Lender.</li>
+            <li>I acknowledge that my current employment is a primary consideration for Advance to extend the loan in my favor, without security and other requirements, and I undertake to inform Advance of any changes to my employment status within twenty-four (24) hours. Failure to do so may result in the account being tagged as delinquent.</li>
+            <li>I further acknowledge that in extending the loan, Advance relied on the personal information I provided through my employer or directly to Advance. In the event that Advance finds out that I knowingly or fraudulently provided any erroneous personal information, then I agree that the loan will become immediately due and payable upon notice to me.  I also agree that Advance reserves the right to file an action for damages against me.</li>
+            <li>I agree that the entire outstanding Principal, including interest, will be deducted from my final salary upon resignation or termination from my present employer. In the event that the outstanding balance due under this Note is not fully repaid when I receive my final salary from my present employer, I agree that (a) my loan will be declared delinquent, and (b) I will pay the ten percent (10%) monthly penalty interest until the outstanding balance has been fully repaid.</li>
+            <li>If any provision of this agreement shall be invalid or unenforceable, the remaining provisions shall not be affected, thereby and every provision hereof, shall be valid and enforceable to the fullest extent permitted by law.</li>
+          </ol>
+        </div>
+        <div class="section signature centered">
+          <p class="strong">BY ELECTRONICALLY SIGNING THE AGREEMENT, THE BORROWER HAS SIGNIFIED HIS/HER AGREEMENT TO THE TERMS AND CONDITIONS STATED HEREIN.</p>
+          <p class="name underline centered"><%= full_name %></p>
+          <p class="compact">Name of Borrower</p>
+          <p class="date underline centered"><%= date_signed %></p>
+          <p class="compact">Date</p>
+        </div>
+        <div class="section payment-schedule centered">
+          <table class="ui table schedule centered unstackable">
+            <thead>
+              <tr>
+                <td>Amount Requested</td>
+                <td>P<%= amount %></td>
+              </tr>
+              <tr>
+                <td>Processing Fee</td>
+                <td>P<%= processing_fee %></td>
+              </tr>
+              <tr>
+                <td>Bank Transfer Fee</td>
+                <td>P<%= bank_fee %></td>
+              </tr>
+              <tr>
+                <td>Interest</td>
+                <td>P<%= interest %></td>
+              </tr>
+              <% if (has_discount === true) { %>
+                <tr>
+                  <td>Discount</td>
+                  <td>- P<%= discount %>
+                  </td>
+                </tr>
+              <% } %>
+              <tr>
+                <td>Final Amount <br>
+                  (incl. fees and taxes)</td>
+                <td>
+                  <strong>P<%= net_amount %></strong>
+                </td>
+              </tr>
+            </thead>
+          </table>
+          <br />
+          <p class="strong">LOAN PAYMENT SCHEDULE</p>
+          <table class="schedule table centered">
+            <thead>
+              <tr>
+                <th>Payment Number</th>
+                <% if (has_discount === true) { %>
+                  <th>
+                    Total Amount Due
+                    <br />
+                    (A + B + C - D)
+                  </th>
+                <% } else { %>
+                  <th>Total Amount Due <br> (A + B + C)</th>
+                <% } %>
+                <th>Principal (A)</th>
+                <th>Fees (B)</th>
+                <th>Interest (C)</th>
+                <% if (has_discount === true) { %>
+                  <th>Discount (D)</th>
+                <% } %>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(var i=0; i < payment_periods.length; i++) { %>
+                <tr class="center aligned">
+                  <td><%= payment_periods[i].payment_period_number %></td>
+                  <td>P<%= payment_periods[i].net_amount_per_payment %></td>
+                  <td>P<%= payment_periods[i].principal_per_payment_period %></td>
+                  <td>P<%= payment_periods[i].fees_per_payment %></td>
+                  <td>P<%= payment_periods[i].interest_per_payment %></td>
+                  <% if (has_discount === true) { %>
+                    <td>P<%= payment_periods[i].discount_per_payment %></td>
+                  <% } %>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
