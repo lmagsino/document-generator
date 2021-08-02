@@ -1,14 +1,14 @@
-import { CommonRoutesConfig } from '../common/common.routes.config';
 import express from 'express';
 import jwt from 'jwt-simple';
 
+import CommonRoutesConfig from '../common/common.routes.config';
 import UsersService from './users.service';
 
 // import debug from 'debug';
 // const debugLog: debug.IDebugger = debug('app');
 
 const SUCCESS_CODE = 200;
-export class UsersRoutes extends CommonRoutesConfig {
+export default class UsersRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
     super(app, 'UsersRoutes');
   }
@@ -44,7 +44,7 @@ export class UsersRoutes extends CommonRoutesConfig {
     // Render pdf from jwt (Base64)
     this.app.get('/render-pdf-jwt/:id', async (req, res) => {
       const decoded = jwt.decode(req.params.id, 'advance');
-      const pdf = Buffer.from(decoded['pdfFile'], 'base64');
+      const pdf = Buffer.from(decoded.pdfFile, 'base64');
 
       res.header('Content-type', 'application/pdf');
       res.send(pdf);
@@ -66,7 +66,6 @@ export class UsersRoutes extends CommonRoutesConfig {
       res.header('Content-type', 'application/pdf');
       res.send(pdf);
     });
-
 
     return this.app;
   }

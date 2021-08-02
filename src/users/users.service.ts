@@ -8,8 +8,9 @@ const s3 = new aws.S3({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
-const compiled: ejs.TemplateFunction =
-    ejs.compile(fs.readFileSync('./test/businesscard.html', 'utf8'));
+const compiled: ejs.TemplateFunction = ejs.compile(
+  fs.readFileSync('./test/businesscard.html', 'utf8'),
+);
 
 const compiledHtml : string = compiled({ title: 'EJS', text: 'Hello, World!' });
 // const options: any = { format: 'Letter' };
@@ -23,7 +24,6 @@ class UsersService {
     //   if (err) return console.log(err);
     //   console.log(res); // { filename: '/app/businesscard.pdf' }
     // });
-
 
     // Save To Cloud storage
     // pdf.create(html).toStream((e, stream) => {
@@ -42,7 +42,6 @@ class UsersService {
     //   });
     // });
 
-
     // Upload to s3 asynchronously
     const createPDF = async (htmlFile: string) => new Promise(((resolve, reject) => {
       pdf.create(htmlFile).toStream((_, stream) => {
@@ -54,24 +53,23 @@ class UsersService {
         };
 
         s3.upload(params, (err: any, res: any) => {
-          if (err) { reject(err); }
-          else { resolve(res); }
+          if (err) {
+            reject(err);
+          } else { resolve(res); }
         });
       });
     }));
 
-    return await createPDF(compiledHtml);
+    await createPDF(compiledHtml);
   }
 
   async retrievePdf() {
-    const createPDF = async (htmlFile: string) => new Promise(((resolve, reject) => {
-      pdf.create(htmlFile).toBuffer((_, buffer) => {
-        // resolve(buffer);
-        resolve(buffer.toString('base64'));
-      });
-    }));
-
-    return await createPDF(compiledHtml);
+    // async (htmlFile: string) => new Promise(((resolve) => {
+    //   pdf.create(htmlFile).toBuffer((_, buffer) => {
+    //     // resolve(buffer);
+    //     resolve(buffer.toString('base64'));
+    //   });
+    // }));
   }
 }
 
