@@ -8,7 +8,7 @@ const s3 = new aws.S3({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
-export function DocumentsService(ref: any, type: any, compiledHtml: any){
+export default function DocumentsService(ref: any, type: any, compiledHtml: any) {
   const createPDF = async (htmlFile: string) => new Promise(((resolve, reject) => {
     pdf.create(htmlFile, options).toStream((_, stream) => {
       const filename = `${ref}_${type}.pdf`;
@@ -20,8 +20,9 @@ export function DocumentsService(ref: any, type: any, compiledHtml: any){
       };
 
       s3.upload(params, (err: any, res: any) => {
-        if (err) { reject(err); }
-        else { resolve(res); }
+        if (err) {
+          reject(err);
+        } else { resolve(res); }
       });
     });
   }));

@@ -1,6 +1,5 @@
-import { CommonRoutesConfig } from '../common/common.routes.config';
-// import ContractsController from './contracts.controller';
 import express from 'express';
+import CommonRoutesConfig from '../common/common.routes.config';
 import ContractsService from './contracts.service';
 
 // import debug from 'debug';
@@ -14,7 +13,7 @@ const LIST_OF_CONTRACTS = [
 
 function paramsList(value: any) {
   let params: Array<string>;
-  switch(value) {
+  switch (value) {
     case 'deduction_authorization':
     case 'privacy_disclosure':
     case 'privacy_disclosure_eperformax':
@@ -47,34 +46,52 @@ function paramsList(value: any) {
   return params;
 }
 
-function isEmpty(str: any) {
+function isEmpty(str: string) {
   return (!str || str === '');
 }
 
-export class ContractsRoutes extends CommonRoutesConfig {
+function validateParams(body: any) {
+  const errorMessage: any = [];
+  const missingParams: any = [];
+
+  if (!(LIST_OF_CONTRACTS.includes(body.type))) {
+    errorMessage.push('File name does not exist');
+  }
+
+  paramsList(body.type).forEach((item) => {
+    if (isEmpty(body[`${item}`])) {
+      missingParams.push(item);
+    }
+  });
+
+  if (missingParams.length !== 0) {
+    errorMessage.push(`Missing params: ${missingParams.join(', ')}`);
+  }
+
+  if (errorMessage.length !== 0) {
+    return errorMessage.join(', ');
+  }
+  return true;
+}
+
+export default class ContractsRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
     super(app, 'ContractsRoutes');
   }
 
   configureRoutes() {
     this.app.post('/contracts', async (req, res) => {
-      const type = req.body.type;
+      const { body } = req;
 
       try {
-        if (!(LIST_OF_CONTRACTS.includes(type))){
-          return res.status(ERROR_CODE).send('File name does not exist');
+        if (validateParams(body) !== true) {
+          return res.status(ERROR_CODE).send(validateParams(body));
         }
-
-        for (const item of paramsList(type)) {
-          if (isEmpty(eval(`req.body.${item}`))){
-            return res.status(ERROR_CODE).send(`Missing params: ${item}`);
-          }
-        }
-
-        const results = await ContractsService.generatePdf(req);
-        res.status(SUCCESS_CODE).send(results);
-      } catch(e) {
-        res.status(ERROR_CODE).send(e.message);
+        const contract = new ContractsService(body, body.type, body.reference_code);
+        const results = await contract.generatePdf();
+        return res.status(SUCCESS_CODE).send(results);
+      } catch (e) {
+        return res.status(ERROR_CODE).send(e.message);
       }
     });
     // this.app.get('/contracts', async (_, res) => {
