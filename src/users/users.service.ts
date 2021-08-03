@@ -60,7 +60,7 @@ class UsersService {
       });
     }));
 
-    await createPDF(compiledHtml);
+    return await createPDF(compiledHtml);
   }
 
   async retrievePdf() {
