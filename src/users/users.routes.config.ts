@@ -3,6 +3,7 @@ import jwt from 'jwt-simple';
 
 import CommonRoutesConfig from '../common/common.routes.config';
 import UsersService from './users.service';
+import AuthService from '../services/auth.service';
 
 // import debug from 'debug';
 // const debugLog: debug.IDebugger = debug('app');
@@ -51,7 +52,7 @@ export default class UsersRoutes extends CommonRoutesConfig {
     });
 
     // Get jwt of pdf params
-    this.app.post('/get-token', async (req, res) => {
+    this.app.post('/get-token', AuthService.authenticateRequest, async (req, res) => {
       const token = jwt.encode(req.body, 'advance');
       res.status(SUCCESS_CODE).send(token);
     });
