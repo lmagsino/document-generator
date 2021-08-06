@@ -1,0 +1,218 @@
+<html>
+  <head>
+    <title><%= reference_code %> Disclosure Statement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Open Sans';
+        font-size: 12px;
+        line-height: 1.4;
+        text-align: justify;
+      }
+      h1 {
+        font-size: 16px !important;
+      }
+      .centered {
+        text-align: center;
+      }
+      .compact {
+        margin: 0;
+      }
+      strong, .strong {
+        font-weight: 900;
+      }
+      .underline {
+        display: inline-block;
+        padding-right: 4em;
+        border-bottom: 1px solid black;
+        min-width: 10em;
+      }
+      .page-header {
+        margin-bottom: 2em;
+      }
+      .section {
+        margin-bottom: 2em;
+      }
+      .page-header .section-title {
+        margin-top: 2em;
+      }
+      .borrower-acknowledgement {
+        margin-bottom: 4em;
+      }
+      .name, .date {
+        text-align: left;
+        margin-bottom: 1em;
+      }
+      .name p, .date p {
+        margin: 0;
+      }
+      p {
+        margin: 0;
+      }
+      ol {
+        margin: 0.5em 0 0;
+        padding-left: 0;
+        counter-reset: list;
+      }
+      ol > li {
+        list-style: none;
+        margin-bottom: 0.5em;
+      }
+      ol > li::before {
+        content: counter(list, lower-alpha) ") ";
+        counter-increment: list;
+        margin-right: 1em;
+      }
+      ol > li:last-child {
+        margin-bottom: 0;
+      }
+      .terms table {
+        width: 100%;
+        font-size: 12px;
+        text-align: justify;
+      }
+      .terms td {
+        vertical-align: top;
+      }
+      .terms td:first-child {
+        padding-right: 1em;
+      }
+      .terms td:nth-child(2n) {
+        padding-bottom: 0.5em
+      } 
+      .creditor-certification .title {
+        padding-bottom: 4em;
+      }
+      .borrower-acknowledgement .statement {
+        margin-top: 4em;
+        margin-bottom: 2em;
+      }
+      .borrower-acknowledgement .name, .borrower-acknowledgement .date {
+        text-align: left;
+        margin-bottom: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ui container text">
+      <div class="page-header centered">
+        <h1>ADVANCE TECH LENDING INC.</h1>
+        <p class="strong compact">DISCLOSURE STATEMENT OF LOAN/CREDIT TRANSACTION</p>
+        <p class="strong compact">
+          (As required by RA 3765, Truth in Lending Act)
+        </p>
+      </div>
+      <div class="page-content">
+        <div class="user-details section">
+          <p>Name of Borrower: <%= full_name %></p>
+          <p>Address: <%= address %></p>
+        </div>
+        <div class="terms section">
+          <table>
+            <tbody>
+              <tr>
+                <td>1.</td>
+                <td>Loan Amount/Principal:</td>
+                <td>P<%= amount %></td>
+              </tr>
+              <tr>
+                <td>2.</td>
+                <td>
+                  Other Charges
+                  <br />
+                  Processing Fee:
+                  <br />
+                  Bank Transfer Fee:
+                  <br />
+                  Interest:
+                  <% if (has_discount === true) { %>
+                    <br />
+                    Discount:
+                  <% } %>
+                </td>
+                <td>
+                  <br />
+                  P<%= processing_fee %>
+                  <br />
+                  P<%= bank_fee %>
+                  <br />
+                  P<%= interest %>
+                  <% if (has_discount === true) { %>
+                  <br />
+                    P<%= discount %>
+                  <% } %>
+                </td>
+              </tr>
+              <tr>
+                <td>3.</td>
+                <td>Loan Term:
+                </td>
+                <td><%= loan_term %></td>
+              </tr>
+              <tr>
+                <td>4.</td>
+                <td colspan="2">
+                  Schedule of Payment:
+                  <ol>
+                    <li>First Payment of P<%= net_amount_per_payment %> due on the Borrower's next payday, provided that the Net Loan Proceeds was disbursed to the Borrower before the internal payroll cut-offs set by the Borrower’s employer. If the loan was disbursed after the internal payroll cut-offs set by the Borrower’s employer, the First Payment will be due on the second payday from the date when the Net Loan Proceeds was disbursed to the Borrower.</li>
+                    <li>Successive Installment Payments: Please see Schedule of Payments provided to the Borrower as posted in the Borrower’s Personal Dashboard Account in <a href='https://www.advance.ph'>https://www.advance.ph</a></li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <td>5.</td>
+                <td colspan="2">
+                  Interest Rate:
+                  <br />
+                  During the term of the loan, the loan shall bear <%= interest_clause %>.
+                </td>
+              </tr>
+              <tr>
+                <td>6.</td>
+                <td colspan="2">
+                  Effective Interest Rate Per Loan Term: The effective interest:&nbsp;<%= effective_interest_rate %>
+                  <br />
+                  The effective interest rate per loan term is higher than the stipulated Interest Rate because of one or more additional charges stated in Item 2, the exact date of disbursement of Net Loan Proceeds and payment of installments.
+                </td>
+              </tr>
+              <tr>
+                <td>7.</td>
+                <td colspan="2">
+                  Interest Calculation Method:
+                  <br />
+                  The interest shall accrue during the payment period as specified in the Schedule of Payments. It shall be calculated for each payment period, regardless if a month has more or less than 30 days. Any remaining unpaid portion of the Loan at the end of the term of the Loan including penalty fees, shall also bear an interest at the rate of ten percent (10%) per month until the Loan Amount is fully paid, the imposition of which may be waived at the sole discretion of the Lender.
+                </td>
+              </tr>
+              <tr>
+                <td>8.</td>
+                <td colspan="2">
+                  Conditional Charges That May Be Imposed:
+                  <br />
+                  Penalty Interest for late or incomplete payment: Ten Percent (10%) monthly penalty interest on the outstanding amount due until it has been fully repaid.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="creditor-certification section">
+          <p class="underline title">CERTIFIED CORRECT:</p>
+          <p class="name">Jaime de los Angeles</p>
+          <p class="position">CEO</p>
+          <p class="strong">ADVANCE TECH LENDING INC.</p>
+          <p>Creditor</p>
+        </div>
+        <div class="borrower-acknowledgement section">
+          <p class="statement">I acknowledge receipt of a copy of this statement prior to the consummation of the credit transaction and that I understand and fully agree to the terms and conditions thereof.</p>
+          <div class="name">
+            <p class="underline"><%= full_name %></p>
+            <p>Name of Borrower</p>
+          </div>
+          <div class="date">
+            <p class="underline"><%= date_signed %></p>
+            <p>Date</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
