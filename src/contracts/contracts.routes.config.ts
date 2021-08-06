@@ -9,13 +9,11 @@ export default class ContractsRoutes extends CommonRoutesConfig {
   }
 
   configureRoutes() {
-    this.app
-      .route('/contracts')
-      .post(
-        ContractsValidator.validateType,
-        ContractsValidator.validateParams,
-        ContractsController.postPdf,
-      );
+    this.app.post('/contracts', [
+      ContractsValidator.validateType,
+      ContractsValidator.validateParams,
+      ContractsController.postPdf,
+    ]);
 
     return this.app;
   }
