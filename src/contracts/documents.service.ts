@@ -1,3 +1,4 @@
+import express from 'express';
 import pdf from 'html-pdf';
 import aws from 'aws-sdk';
 
@@ -8,10 +9,10 @@ const s3 = new aws.S3({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
-export default function DocumentsService(ref: any, type: any, compiledHtml: any) {
+export default function DocumentsService(req: express.Request, compiledHtml: any) {
   const createPDF = async (htmlFile: string) => new Promise(((resolve, reject) => {
     pdf.create(htmlFile, options).toStream((_, stream) => {
-      const filename = `${ref}_${type}.pdf`;
+      const filename = `${req.body.reference_code}_${req.body.type}.pdf`;
       const params = {
         Key: filename,
         Body: stream,

@@ -1,9 +1,7 @@
 import express from 'express';
 import CommonRoutesConfig from '../common/common.routes.config';
 import ContractsController from './contracts.controller';
-
-const SUCCESS_CODE = 200;
-const ERROR_CODE = 500;
+import ContractsValidator from './contracts.validator';
 
 export default class ContractsRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -11,16 +9,14 @@ export default class ContractsRoutes extends CommonRoutesConfig {
   }
 
   configureRoutes() {
-    this.app.post('/contracts', async (req, res) => {
-      const { body } = req;
-      const contractsController = new ContractsController(body);
-      const results : any = await contractsController.validateAndGeneratePdf();
+    this.app
+      .route('/contracts')
+      .post(
+        ContractsValidator.validateType,
+        ContractsValidator.validateParams,
+        ContractsController.postPdf,
+      );
 
-      if (results.status === 'error') {
-        return res.status(ERROR_CODE).send(results.message);
-      }
-      return res.status(SUCCESS_CODE).send(results);
-    });
     return this.app;
   }
 }
