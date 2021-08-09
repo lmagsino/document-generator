@@ -59,8 +59,8 @@ class UsersService {
         });
       });
     }));
-
-    return await createPDF(compiledHtml);
+    const pdfLink = await createPDF(compiledHtml);
+    return pdfLink;
   }
 
   async retrievePdf() {
@@ -70,8 +70,8 @@ class UsersService {
         resolve(buffer.toString('base64'));
       });
     }));
-
-    return await createPdf(compiledHtml);
+    const pdfBuffer = await createPdf(compiledHtml);
+    return pdfBuffer;
   }
 }
 
