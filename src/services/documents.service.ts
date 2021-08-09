@@ -9,23 +9,27 @@ const s3 = new aws.S3({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
-export default function DocumentsService(req: express.Request, compiledHtml: any) {
-  const createPDF = async (htmlFile: string) => new Promise(((resolve, reject) => {
-    pdf.create(htmlFile, options).toStream((_, stream) => {
-      const filename = `${req.body.reference_code}_${req.body.type}.pdf`;
-      const params = {
-        Key: filename,
-        Body: stream,
-        Bucket: s3Bucket,
-        ContentType: 'application/pdf',
-      };
+class DocumentsService {
+  async uploadPdf(req: express.Request, compiledHtml: any) {
+    const createPdf = async (htmlFile: string) => new Promise(((resolve, reject) => {
+      pdf.create(htmlFile, options).toStream((_, stream) => {
+        const filename = `${req.body.reference_code}_${req.body.type}.pdf`;
+        const params = {
+          Key: filename,
+          Body: stream,
+          Bucket: s3Bucket,
+          ContentType: 'application/pdf',
+        };
 
-      s3.upload(params, (err: any, res: any) => {
-        if (err) {
-          reject(err);
-        } else { resolve(res); }
+        s3.upload(params, (err: any, res: any) => {
+          if (err) {
+            reject(err);
+          } else { resolve(res.Location); }
+        });
       });
-    });
-  }));
-  return createPDF(compiledHtml);
+    }));
+    return createPdf(compiledHtml);
+  }
 }
+
+export default new DocumentsService();

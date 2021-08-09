@@ -8,7 +8,7 @@ class ContractsService {
     const compiled = ejs.compile(fs.readFileSync(`./pdfs/${req.body.type}.html`, 'utf8'));
     const compiledHtml = compiled(req.body);
 
-    return DocumentsService(req, compiledHtml);
+    return DocumentsService.uploadPdf(req, compiledHtml);
   }
 }
 
