@@ -1,5 +1,5 @@
 import express from 'express';
-import ContractsService from './contracts.service';
+import ContractsService from '../services/contracts.service';
 
 class ContractsController {
   async postPdf(req: express.Request, res: express.Response) {

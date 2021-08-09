@@ -1,7 +1,7 @@
 import express from 'express';
-import CommonRoutesConfig from '../common/common.routes.config';
-import ContractsController from './contracts.controller';
-import ContractsValidator from './contracts.validator';
+import CommonRoutesConfig from './common.routes.config';
+import ContractsController from '../controllers/contracts.controller';
+import ContractsValidator from '../validators/contracts.validator';
 
 export default class ContractsRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
