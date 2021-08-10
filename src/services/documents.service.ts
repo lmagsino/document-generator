@@ -24,7 +24,7 @@ class DocumentsService {
         s3.upload(params, (err: any, res: any) => {
           if (err) {
             reject(err);
-          } else { resolve(res.Location); }
+          } else { resolve(res.key); }
         });
       });
     }));
