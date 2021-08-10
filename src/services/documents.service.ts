@@ -28,6 +28,7 @@ class DocumentsService {
         });
       });
     }));
+
     return createPdf(compiledHtml);
   }
 }
