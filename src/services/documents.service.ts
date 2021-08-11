@@ -9,13 +9,17 @@ const s3 = new aws.S3({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
+function getFileName(str: String) {
+  return str.substring(str.lastIndexOf('/') + 1);
+}
+
 class DocumentsService {
   async uploadPdf(req: express.Request, compiledHtml: any) {
     const createPdf = async (htmlFile: string) => new Promise(((resolve, reject) => {
       pdf.create(htmlFile, options).toStream((_, stream) => {
-        const filename = `${req.body.reference_code}_${req.body.type}.pdf`;
+        const path = `${req.body.path_name}${req.body.file_name}`;
         const params = {
-          Key: filename,
+          Key: path,
           Body: stream,
           Bucket: s3Bucket,
           ContentType: 'application/pdf',
@@ -24,7 +28,7 @@ class DocumentsService {
         s3.upload(params, (err: any, res: any) => {
           if (err) {
             reject(err);
-          } else { resolve(res.key); }
+          } else { resolve(getFileName(res.key)); }
         });
       });
     }));

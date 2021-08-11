@@ -71,7 +71,7 @@ function validateType(type: any) {
 
 class ContractsValidator {
   async validateType(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (validateType(req.body.type) === true) {
+    if (validateType(req.body.params.type) === true) {
       next();
     } else {
       res.status(400).send({ error: validateType(req.body.type) });
@@ -79,7 +79,7 @@ class ContractsValidator {
   }
 
   async validateParams(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (validateParams(req.body) === true) {
+    if (validateParams(req.body.params) === true) {
       next();
     } else {
       res.status(400).send({ error: validateParams(req.body) });
