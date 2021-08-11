@@ -10,6 +10,10 @@ class ContractsService {
 
     return DocumentsService.uploadPdf(req, compiledHtml);
   }
+
+  async retrievePdf(req: express.Request) {
+    return DocumentsService.retrieveFile(req);
+  }
 }
 
 export default new ContractsService();

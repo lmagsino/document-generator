@@ -16,6 +16,10 @@ export default class ContractsRoutes extends CommonRoutesConfig {
       ContractsController.postPdf,
     ]);
 
+    this.app.get('/get-contract', AuthService.authenticateRequest, [
+      ContractsController.getPdf,
+    ]);
+
     return this.app;
   }
 }

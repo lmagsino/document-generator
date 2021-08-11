@@ -35,6 +35,24 @@ class DocumentsService {
 
     return createPdf(compiledHtml);
   }
+
+  async retrieveFile(req: any) {
+    const file = new Promise(((resolve, reject) => {
+      const path = `${req.body.path_name}${req.body.file_name}`;
+      const params = {
+        Bucket: req.body.bucket,
+        Key: path,
+        Expires: 3600,
+      };
+
+      s3.getSignedUrl('getObject', params, (err: any, res: any) => {
+        if (err) {
+          reject(err);
+        } else { resolve(res); }
+      });
+    }));
+    return file;
+  }
 }
 
 export default new DocumentsService();

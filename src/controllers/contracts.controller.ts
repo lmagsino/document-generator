@@ -10,6 +10,15 @@ class ContractsController {
       res.status(500).send(e.message);
     }
   }
+
+  async getPdf(req: express.Request, res: express.Response) {
+    try {
+      const url = await ContractsService.retrievePdf(req);
+      res.status(200).send({ url });
+    } catch (e) {
+      res.status(500).send(e.message);
+    }
+  }
 }
 
 export default new ContractsController();
