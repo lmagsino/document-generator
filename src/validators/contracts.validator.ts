@@ -74,7 +74,7 @@ class ContractsValidator {
     if (validateType(req.body.params.type) === true) {
       next();
     } else {
-      res.status(400).send({ error: validateType(req.body.type) });
+      res.status(400).send({ error: validateType(req.body.params.type) });
     }
   }
 
@@ -82,7 +82,7 @@ class ContractsValidator {
     if (validateParams(req.body.params) === true) {
       next();
     } else {
-      res.status(400).send({ error: validateParams(req.body) });
+      res.status(400).send({ error: validateParams(req.body.params) });
     }
   }
 }
