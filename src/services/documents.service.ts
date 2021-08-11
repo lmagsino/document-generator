@@ -3,7 +3,6 @@ import pdf from 'html-pdf';
 import aws from 'aws-sdk';
 
 const options: any = { format: 'Letter', border: '25mm' };
-const s3Bucket: any = process.env.AWS_S3_BUCKET;
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -17,11 +16,10 @@ class DocumentsService {
   async uploadPdf(req: express.Request, compiledHtml: any) {
     const createPdf = async (htmlFile: string) => new Promise(((resolve, reject) => {
       pdf.create(htmlFile, options).toStream((_, stream) => {
-        const path = `${req.body.path_name}${req.body.file_name}`;
         const params = {
-          Key: path,
+          Key: req.body.file_name,
           Body: stream,
-          Bucket: s3Bucket,
+          Bucket: req.body.path_name,
           ContentType: 'application/pdf',
         };
 
@@ -38,10 +36,9 @@ class DocumentsService {
 
   async retrieveFile(req: any) {
     const file = new Promise(((resolve, reject) => {
-      const path = `${req.body.path_name}${req.body.file_name}`;
       const params = {
-        Bucket: req.body.bucket,
-        Key: path,
+        Bucket: req.body.path_name,
+        Key: req.body.file_name,
         Expires: 3600,
       };
 
