@@ -40,16 +40,16 @@ function paramsList(value: any) {
   return params;
 }
 
-function isEmpty(str: string) {
+function isEmptyString(str: any) {
   return (!str || str === '');
 }
 
-function validateParams(body: any) {
+function validateParams(params: any) {
   const errorMessage: any = [];
   const missingParams: any = [];
 
-  paramsList(body.type).forEach((item) => {
-    if (isEmpty(body[`${item}`])) {
+  paramsList(params.type).forEach((item) => {
+    if (isEmptyString(params[`${item}`])) {
       missingParams.push(item);
     }
   });
@@ -62,27 +62,51 @@ function validateParams(body: any) {
   return errorMessage.toString();
 }
 
-function validateType(type: any) {
-  if (!(LIST_OF_CONTRACTS.includes(type))) {
+function validateType(params: any) {
+  if (!(LIST_OF_CONTRACTS.includes(params.type))) {
     return 'File name does not exist';
   }
   return true;
 }
 
 class ContractsValidator {
-  async validateType(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (validateType(req.body.type) === true) {
+  async paramsObj(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if ('params' in req.body) {
       next();
     } else {
-      res.status(400).send({ error: validateType(req.body.type) });
+      res.status(400).send({ error: 'Params object not found' });
     }
   }
 
-  async validateParams(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (validateParams(req.body) === true) {
+  async pathAndFileName(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (!isEmptyString(req.body.path_name) && !isEmptyString(req.body.file_name)) {
       next();
     } else {
-      res.status(400).send({ error: validateParams(req.body) });
+      res.status(400).send({ error: 'Missing path or file name' });
+    }
+  }
+
+  async paramsType(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (validateType(req.body.params) === true) {
+      next();
+    } else {
+      res.status(400).send({ error: validateType(req.body.params) });
+    }
+  }
+
+  async paramsList(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (validateParams(req.body.params) === true) {
+      next();
+    } else {
+      res.status(400).send({ error: validateParams(req.body.params) });
+    }
+  }
+
+  async queryFilePath(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (!isEmptyString(req.query.path_name) && !isEmptyString(req.query.file_name)) {
+      next();
+    } else {
+      res.status(400).send({ error: 'Missing path or file name' });
     }
   }
 }
