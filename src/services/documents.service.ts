@@ -37,8 +37,8 @@ class DocumentsService {
   async retrieveFile(req: any) {
     const file = new Promise(((resolve, reject) => {
       const params = {
-        Bucket: req.body.path_name,
-        Key: req.body.file_name,
+        Bucket: req.query.path_name,
+        Key: req.query.file_name,
         Expires: 3600,
       };
 

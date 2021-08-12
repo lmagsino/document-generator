@@ -40,7 +40,7 @@ function paramsList(value: any) {
   return params;
 }
 
-function isEmptyString(str: string) {
+function isEmptyString(str: any) {
   return (!str || str === '');
 }
 
@@ -99,6 +99,14 @@ class ContractsValidator {
       next();
     } else {
       res.status(400).send({ error: validateParams(req.body.params) });
+    }
+  }
+
+  async queryFilePath(req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (!isEmptyString(req.query.path_name) && !isEmptyString(req.query.file_name)) {
+      next();
+    } else {
+      res.status(400).send({ error: 'Missing path or file name' });
     }
   }
 }
