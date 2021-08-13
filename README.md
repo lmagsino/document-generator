@@ -7,8 +7,6 @@ Advance's Document Generator
 * ExpressJs
 * AWS-SDK
 
-
-
 ## Development Setup
 
 ### Setup NodeJs
@@ -47,7 +45,6 @@ CLIENT_SECRET=c1fb2ccc4a6ae256dc51dd3232fb222baea29b98784721820e192fba127a219ac5
 path_name=advance-doc-gen-bucket/documents/deduction_authorizations
 file_name=deduction_authorization_ABCDE1234_2021-08-11_13-26-49-549.pdf
 ```
-
 
 ### `For Authentication:`
 ```
