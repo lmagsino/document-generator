@@ -23,7 +23,7 @@ function paramsList(value: any) {
 
     case 'weekly_disclosure_statement':
       params = ['reference_code', 'full_name', 'date_signed', 'address', 'amount', 'processing_fee',
-        'bank_fee', 'interest', 'has_discount', 'discount', 'loan_term', 'net_amount_per_payment',
+        'bank_fee', 'interest', 'has_discount', 'discount', 'weekly_loan_term', 'net_amount_per_payment',
         'interest_clause', 'effective_interest_rate', 'dst'];
       break;
 
