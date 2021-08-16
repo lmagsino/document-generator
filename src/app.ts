@@ -12,11 +12,11 @@ import ContractsRoutes from './routers/contracts.routes.config';
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
-const port = 3000;
 const routes: Array<CommonRoutesConfig> = [];
 const debugLog: debug.IDebugger = debug('app');
 
 const SUCCESS_CODE = 200;
+const PORT = process.env.PORT || 8080;
 
 // here we are adding middleware to parse all incoming requests as JSON
 app.use(express.json());
@@ -48,12 +48,12 @@ routes.push(new UsersRoutes(app));
 routes.push(new ContractsRoutes(app));
 
 // this is a simple route to make sure everything is working properly
-const runningMessage = `Server running at http://localhost:${port}`;
+const runningMessage = `Server running at http://localhost:${PORT}`;
 app.get('/', (req: express.Request, res: express.Response) => {
   res.status(SUCCESS_CODE).send(runningMessage);
 });
 
-server.listen(port, () => {
+server.listen(PORT, () => {
   routes.forEach((route: CommonRoutesConfig) => {
     debugLog(`Routes configured for ${route.getName()}`);
   });
