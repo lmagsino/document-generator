@@ -15,12 +15,12 @@ export default class ContractsRoutes extends CommonRoutesConfig {
       ContractsValidator.pathAndFileName,
       ContractsValidator.paramsType,
       ContractsValidator.paramsList,
-      ContractsController.postPdf,
+      ContractsController.upload,
     ]);
 
-    this.app.get('/contracts/get_url', AuthService.authenticateRequest, [
+    this.app.get('/contracts/url', AuthService.authenticateRequest, [
       ContractsValidator.queryFilePath,
-      ContractsController.getPdf,
+      ContractsController.retrieveUrl,
     ]);
 
     return this.app;

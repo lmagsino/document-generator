@@ -1,8 +1,9 @@
 import express from 'express';
 
 const LIST_OF_CONTRACTS = [
-  'deduction_authorization', 'privacy_disclosure', 'privacy_disclosure_eperformax',
-  'food_panda_deduction', 'disclosure_statement', 'weekly_disclosure_statement',
+  'deduction_authorization', 'privacy_disclosure',
+  'privacy_disclosure_eperformax', 'food_panda_deduction',
+  'disclosure_statement', 'weekly_disclosure_statement',
   'promissory_note', 'weekly_promissory_note'];
 
 function paramsList(value: any) {
@@ -16,21 +17,27 @@ function paramsList(value: any) {
       break;
 
     case 'disclosure_statement':
-      params = ['reference_code', 'full_name', 'date_signed', 'address', 'amount',
+      params = [
+        'reference_code', 'full_name', 'date_signed', 'address', 'amount',
         'processing_fee', 'bank_fee', 'interest', 'has_discount', 'discount',
-        'loan_term', 'net_amount_per_payment', 'interest_clause', 'effective_interest_rate'];
+        'loan_term', 'net_amount_per_payment', 'interest_clause',
+        'effective_interest_rate'];
       break;
 
     case 'weekly_disclosure_statement':
-      params = ['reference_code', 'full_name', 'date_signed', 'address', 'amount', 'processing_fee',
-        'bank_fee', 'interest', 'has_discount', 'discount', 'weekly_loan_term', 'net_amount_per_payment',
-        'interest_clause', 'effective_interest_rate', 'dst'];
+      params = [
+        'reference_code', 'full_name', 'date_signed', 'address', 'amount',
+        'processing_fee', 'bank_fee', 'interest', 'has_discount', 'discount',
+        'weekly_loan_term', 'net_amount_per_payment', 'interest_clause',
+        'effective_interest_rate', 'dst'];
       break;
 
     case 'promissory_note':
     case 'weekly_promissory_note':
-      params = ['reference_code', 'full_name', 'date_signed', 'address', 'amount', 'amount_in_words', 'processing_fee',
-        'bank_fee', 'interest', 'has_discount', 'discount', 'net_amount', 'payment_periods'];
+      params = [
+        'reference_code', 'full_name', 'date_signed', 'address', 'amount',
+        'amount_in_words', 'processing_fee', 'bank_fee', 'interest',
+        'has_discount', 'discount', 'net_amount', 'payment_periods'];
       break;
 
     default:
