@@ -1,7 +1,7 @@
 import express from 'express';
 import jwt from 'jwt-simple';
 
-import CommonRoutesConfig from '../common/common.routes.config';
+import CommonRoutesConfig from '../routers/common.routes.config';
 import UsersService from './users.service';
 import AuthService from '../services/auth.service';
 
