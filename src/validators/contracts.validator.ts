@@ -6,7 +6,7 @@ const LIST_OF_CONTRACTS = [
   'disclosure_statement', 'weekly_disclosure_statement',
   'promissory_note', 'weekly_promissory_note'];
 
-function paramsList(value: any) {
+function paramsList(value: unknown) {
   let params: Array<string>;
   switch (value) {
     case 'deduction_authorization':
@@ -47,13 +47,13 @@ function paramsList(value: any) {
   return params;
 }
 
-function isEmptyString(str: any) {
+function isEmptyString(str: unknown) {
   return (!str || str === '');
 }
 
 function validateParams(params: any) {
-  const errorMessage: any = [];
-  const missingParams: any = [];
+  const errorMessage: string[] = [];
+  const missingParams: string[] = [];
 
   paramsList(params.type).forEach((item) => {
     if (isEmptyString(params[`${item}`])) {

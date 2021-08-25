@@ -4,7 +4,7 @@ import ContractsService from '../services/contracts.service';
 class ContractsController {
   async upload(req: express.Request, res: express.Response) {
     try {
-      const pdf = await ContractsService.upload(req);
+      const pdf: unknown = await ContractsService.upload(req);
       res.status(200).send({ file_name: pdf });
     } catch (e) {
       res.status(500).send(e.message);
@@ -13,7 +13,7 @@ class ContractsController {
 
   async retrieveUrl(req: express.Request, res: express.Response) {
     try {
-      const url = await ContractsService.retrieveUrl(req);
+      const url: unknown = await ContractsService.retrieveUrl(req);
       res.status(200).send({ url });
     } catch (e) {
       res.status(500).send(e.message);

@@ -1,7 +1,7 @@
 import basicAuth from 'express-basic-auth';
 
-const CLIENT_ID = process.env.CLIENT_ID ?? '';
-const CLIENT_SECRET = process.env.CLIENT_SECRET ?? '';
+const CLIENT_ID: string = process.env.CLIENT_ID! ?? '';
+const CLIENT_SECRET: string = process.env.CLIENT_SECRET! ?? '';
 
 // TODO: Add validation if CLIENT_ID is blank
 export default class AuthService {
