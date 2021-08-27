@@ -19,6 +19,26 @@ class ContractsController {
       res.status(500).send(e.message);
     }
   }
+
+  generateToken(req: express.Request, res: express.Response) {
+    try {
+      const token: unknown = ContractsService.generateToken(req);
+      res.status(200).send({ token });
+    } catch (e) {
+      res.status(500).send(e.message);
+    }
+  }
+
+  async show(req: express.Request, res: express.Response) {
+    try {
+      const buffer: unknown = await ContractsService.retrieveBuffer(req);
+
+      res.header('Content-type', 'application/pdf');
+      res.send(buffer);
+    } catch (e) {
+      res.status(500).send(e.message);
+    }
+  }
 }
 
 export default new ContractsController();

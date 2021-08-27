@@ -24,7 +24,6 @@ const loggerOptions: expressWinston.LoggerOptions = {
 };
 
 expressWinston.requestWhitelist.push('body');
-expressWinston.responseWhitelist.push('body');
 
 app.use(expressWinston.logger(loggerOptions));
 

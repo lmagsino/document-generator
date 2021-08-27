@@ -1,16 +1,10 @@
 import express from 'express';
-import fs from 'fs';
-import ejs from 'ejs';
+import jwt from 'jwt-simple';
 import DocumentsService from './documents.service';
 
 class ContractsService {
   async upload(req: express.Request) {
-    const htmlPath: string = `./pdfs/${req.body.params.type}.html`;
-    const rawFile: string = fs.readFileSync(htmlPath, 'utf8');
-
-    const compiled: ejs.TemplateFunction = ejs.compile(rawFile);
-    const compiledHtml: string = compiled(req.body.params);
-
+    const compiledHtml = DocumentsService.compileHtml(req.body);
     const pathName: string = String(req.body.path_name);
     const fileName: string = String(req.body.file_name);
 
@@ -21,7 +15,24 @@ class ContractsService {
     const pathName: string = String(req.query.path_name);
     const fileName: string = String(req.query.file_name);
 
-    return DocumentsService.retrieveFile(pathName, fileName);
+    return DocumentsService.retrieveUrl(pathName, fileName);
+  }
+
+  generateToken(req: express.Request) {
+    return jwt.encode(req.body, process.env.TOKEN_SECRET!);
+  }
+
+  async retrieveBuffer(req: express.Request) {
+    const decoded: string = jwt.decode(
+      req.params.id, process.env.TOKEN_SECRET!,
+    );
+
+    const compiledHtml: string = DocumentsService.compileHtml(decoded);
+    const fileBase64: any = await DocumentsService.retrieveFileBase64(
+      compiledHtml,
+    );
+
+    return Buffer.from(fileBase64, 'base64');
   }
 }
 

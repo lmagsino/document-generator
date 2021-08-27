@@ -1,5 +1,7 @@
 import pdf from 'html-pdf';
 import aws from 'aws-sdk';
+import fs from 'fs';
+import ejs from 'ejs';
 
 const options: {} = { format: 'Letter', border: '25mm' };
 const s3 = new aws.S3({
@@ -34,8 +36,8 @@ class DocumentsService {
     return createPdf(compiledHtml);
   }
 
-  async retrieveFile(pathName: string, fileName: string) {
-    const file = new Promise(((resolve, reject) => {
+  async retrieveUrl(pathName: string, fileName: string) {
+    const url = new Promise(((resolve, reject) => {
       const params = {
         Bucket: pathName,
         Key: fileName,
@@ -48,7 +50,24 @@ class DocumentsService {
         } else { resolve(res); }
       });
     }));
-    return file;
+    return url;
+  }
+
+  async retrieveFileBase64(compiledHtml: string) {
+    const fileBase64 = async (htmlFile: string) => new Promise(((resolve) => {
+      pdf.create(htmlFile, options).toBuffer((_, buffer) => {
+        resolve(buffer.toString('base64'));
+      });
+    }));
+    return fileBase64(compiledHtml);
+  }
+
+  compileHtml(object: any) {
+    const htmlPath: string = `./pdfs/${object.params.type}.html`;
+    const rawFile: string = fs.readFileSync(htmlPath, 'utf8');
+
+    const compiler: ejs.TemplateFunction = ejs.compile(rawFile);
+    return compiler(object.params);
   }
 }
 
