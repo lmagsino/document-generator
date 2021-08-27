@@ -1,4 +1,5 @@
 import express from 'express';
+import jwt from 'jwt-simple';
 
 const LIST_OF_CONTRACTS = [
   'deduction_authorization', 'privacy_disclosure',
@@ -76,6 +77,10 @@ function validateType(params: any) {
   return true;
 }
 
+function sendError(res: express.Response, message: string) {
+  res.status(400).send({ error: message });
+}
+
 class ContractsValidator {
   async paramsObj(req: express.Request, res: express.Response, next: express.NextFunction) {
     if ('params' in req.body) {
@@ -114,6 +119,22 @@ class ContractsValidator {
       next();
     } else {
       res.status(400).send({ error: 'Missing path or file name' });
+    }
+  }
+
+  validateToken(
+    req: express.Request, res: express.Response, next: express.NextFunction,
+  ) {
+    try {
+      const decoded = jwt.decode(req.params.id, process.env.TOKEN_SECRET!);
+
+      if ('params' in decoded) {
+        next();
+      } else {
+        sendError(res, 'Params object not found');
+      }
+    } catch (e) {
+      sendError(res, 'Token Verification Failed');
     }
   }
 }
