@@ -19,7 +19,10 @@ class ContractsService {
   }
 
   generateToken(req: express.Request) {
-    return jwt.encode(req.body, process.env.TOKEN_SECRET!);
+    const object = req.body;
+    object.exp = (Date.now() / 1000) + 3600;
+
+    return jwt.encode(object, process.env.TOKEN_SECRET!);
   }
 
   async retrieveBuffer(req: express.Request) {
