@@ -7,24 +7,36 @@ Advance's Document Generator
 * ExpressJs
 * AWS-SDK
 
+## Prerequisites
+* NodeJs
+* yarn
+
 ## Development Setup
+* Install dependencies: `yarn`
+* Get a copy of `.env` file
+* Run the server: `yarn start`
 
-### Setup NodeJs
-1. Install Homebrew: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-2. Install NodeJs: `brew install node`
-  
-### Create .env file
+## Sample `.env` file
 ```
-CLIENT_ID=54a87668-f4ba-11eb-9a03-0242ac130003
-CLIENT_SECRET=c1fb2ccc4a6ae256dc51dd3232fb222baea29b98784721820e192fba127a219ac565eb75649e79f731d60912d5a87efee2f73c8d425b2835f1022b10e0fe8463
+AWS_S3_BUCKET=advance-documents
+AWS_ACCESS_KEY_ID=DFSDFUIJSDKFJSDFJISDJF
+AWS_SECRET_ACCESS_KEY=qXmQgnYf0asdfi9ksjdfljasdifj1akGlAytBW48jzD
+
+CLIENT_ID=78989sdf-f4ba-11eb-9a03-asdfasdf
+CLIENT_SECRET=askdjfi_sidfjksdfkj
+TOKEN_SECRET=EJlsidjfisdfjisdjf
+
+PORT = 3030
 ```
 
-### Run the server
-1. Install dependencies: `npm install`
-2. Run the server: `npm start`
+### `For Authentication:`
+* Basic Auth
+* Username = CLIENT_ID 
+* Password = CLIENT_SECRET
 
 ## Endpoints
 ### `POST` /contracts - *Generates PDF and uploads to S3*
+### `POST` /contracts/token - *Retrieves token. Use for browser rendering*
 ```
 // Sample body params request:
 {
@@ -34,21 +46,16 @@ CLIENT_SECRET=c1fb2ccc4a6ae256dc51dd3232fb222baea29b98784721820e192fba127a219ac5
     "full_name": "Test User123",
     "date_signed": "28 July 2021"
   },
-  "path_name": "advance-doc-gen-bucket/documents/deduction_authorizations",
+  "path_name": "advance-documents/deduction_authorizations",
   "file_name": "deduction_authorization_ABCDE1234_2021-08-11_13-26-49-549.pdf"
 }
 ```
 
-### `GET` /contracts/get_url - *Retrieves signed URL of S3 Object*
+### `GET` /contracts/url - *Retrieves signed URL of S3 Object*
 ```
 // Sample query params request:
-path_name=advance-doc-gen-bucket/documents/deduction_authorizations
+path_name=advance-documents/deduction_authorizations
 file_name=deduction_authorization_ABCDE1234_2021-08-11_13-26-49-549.pdf
 ```
 
-### `For Authentication:`
-```
-// Add Basic Auth:
-Username: 54a87668-f4ba-11eb-9a03-0242ac130003
-Password: c1fb2ccc4a6ae256dc51dd3232fb222baea29b98784721820e192fba127a219ac565eb75649e79f731d60912d5a87efee2f73c8d425b2835f1022b10e0fe8463
-```
+### `GET` /contracts/:token - *Render pdf document to browser*
