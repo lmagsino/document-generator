@@ -27,7 +27,7 @@ class ContractsService {
 
   async retrieveBuffer(req: express.Request) {
     const decoded: string = jwt.decode(
-      req.params.id, process.env.TOKEN_SECRET!,
+      req.params.token, process.env.TOKEN_SECRET!,
     );
 
     const compiledHtml: string = DocumentsService.compileHtml(decoded);

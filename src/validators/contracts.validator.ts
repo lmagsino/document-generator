@@ -126,7 +126,7 @@ class ContractsValidator {
     req: express.Request, res: express.Response, next: express.NextFunction,
   ) {
     try {
-      const decoded = jwt.decode(req.params.id, process.env.TOKEN_SECRET!);
+      const decoded = jwt.decode(req.params.token, process.env.TOKEN_SECRET!);
 
       if ('params' in decoded) {
         next();
