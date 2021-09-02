@@ -82,43 +82,55 @@ function sendError(res: express.Response, message: string) {
 }
 
 class ContractsValidator {
-  async paramsObj(req: express.Request, res: express.Response, next: express.NextFunction) {
+  paramsObj(
+    req: express.Request, res: express.Response, next: express.NextFunction,
+  ) {
     if ('params' in req.body) {
       next();
     } else {
-      res.status(400).send({ error: 'Params object not found' });
+      sendError(res, 'Params object not found');
     }
   }
 
-  async pathAndFileName(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (!isEmptyString(req.body.path_name) && !isEmptyString(req.body.file_name)) {
+  pathAndFileName(
+    req: express.Request, res: express.Response, next: express.NextFunction,
+  ) {
+    if (!isEmptyString(req.body.path_name)
+      && !isEmptyString(req.body.file_name)) {
       next();
     } else {
-      res.status(400).send({ error: 'Missing path or file name' });
+      sendError(res, 'Missing path or file name');
     }
   }
 
-  async paramsType(req: express.Request, res: express.Response, next: express.NextFunction) {
+  paramsType(
+    req: express.Request, res: express.Response, next: express.NextFunction,
+  ) {
     if (validateType(req.body.params) === true) {
       next();
     } else {
-      res.status(400).send({ error: validateType(req.body.params) });
+      sendError(res, validateType(req.body.params).toString());
     }
   }
 
-  async paramsList(req: express.Request, res: express.Response, next: express.NextFunction) {
+  paramsList(
+    req: express.Request, res: express.Response, next: express.NextFunction,
+  ) {
     if (validateParams(req.body.params) === true) {
       next();
     } else {
-      res.status(400).send({ error: validateParams(req.body.params) });
+      sendError(res, validateParams(req.body.params).toString());
     }
   }
 
-  async queryFilePath(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (!isEmptyString(req.query.path_name) && !isEmptyString(req.query.file_name)) {
+  queryFilePath(
+    req: express.Request, res: express.Response, next: express.NextFunction,
+  ) {
+    if (!isEmptyString(req.query.path_name)
+      && !isEmptyString(req.query.file_name)) {
       next();
     } else {
-      res.status(400).send({ error: 'Missing path or file name' });
+      sendError(res, 'Missing path or file name');
     }
   }
 
