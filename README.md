@@ -1,4 +1,4 @@
-# advance-document-generator
+# Advance Document Generator
 Advance's Document Generator
 
 ## Technologies
