@@ -3,7 +3,16 @@ import aws from 'aws-sdk';
 import fs from 'fs';
 import ejs from 'ejs';
 
-const options: {} = { format: 'Letter', border: '25mm' };
+const wkhtmltopdf = require('wkhtmltopdf');
+
+const options: {} = {
+  pageSize: 'a4',
+  marginTop: '25mm',
+  marginBottom: '25mm',
+  marginRight: '25mm',
+  marginLeft: '25mm',
+};
+
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -17,22 +26,20 @@ class DocumentsService {
   async uploadPdf(file: {pathName: string, fileName: string},
     compiledHtml: string) {
     const createPdf = async (htmlFile: string) => new Promise(((resolve, reject) => {
-      pdf.create(htmlFile, options).toStream((_, stream) => {
-        const params = {
-          Key: file.fileName,
-          Body: stream,
-          Bucket: file.pathName,
-          ContentType: 'application/pdf',
-        };
+      const doc = wkhtmltopdf(htmlFile, options);
+      const params = {
+        Key: file.fileName,
+        Body: doc,
+        Bucket: file.pathName,
+        ContentType: 'application/pdf',
+      };
 
-        s3.upload(params, (err: unknown, res: any) => {
-          if (err) {
-            reject(err);
-          } else { resolve(getFileName(res.key)); }
-        });
+      s3.upload(params, (err: unknown, res: any) => {
+        if (err) {
+          reject(err);
+        } else { resolve(getFileName(res.key)); }
       });
     }));
-
     return createPdf(compiledHtml);
   }
 
