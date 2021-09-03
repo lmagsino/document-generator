@@ -82,48 +82,24 @@ function sendError(res: express.Response, message: string) {
 }
 
 class ContractsValidator {
-  paramsObj(
+  validateParams(
     req: express.Request, res: express.Response, next: express.NextFunction,
   ) {
-    if ('params' in req.body) {
-      next();
-    } else {
+    if (!('params' in req.body)) {
       sendError(res, 'Params object not found');
-    }
-  }
-
-  pathAndFileName(
-    req: express.Request, res: express.Response, next: express.NextFunction,
-  ) {
-    if (!isEmptyString(req.body.path_name)
-      && !isEmptyString(req.body.file_name)) {
-      next();
-    } else {
+    } else if (isEmptyString(req.body.path_name)
+    || isEmptyString(req.body.file_name)) {
       sendError(res, 'Missing path or file name');
-    }
-  }
-
-  paramsType(
-    req: express.Request, res: express.Response, next: express.NextFunction,
-  ) {
-    if (validateType(req.body.params) === true) {
-      next();
-    } else {
+    } else if (validateType(req.body.params) !== true) {
       sendError(res, validateType(req.body.params).toString());
-    }
-  }
-
-  paramsList(
-    req: express.Request, res: express.Response, next: express.NextFunction,
-  ) {
-    if (validateParams(req.body.params) === true) {
-      next();
-    } else {
+    } else if (validateParams(req.body.params) !== true) {
       sendError(res, validateParams(req.body.params).toString());
+    } else {
+      next();
     }
   }
 
-  queryFilePath(
+  validateFileAndPathName(
     req: express.Request, res: express.Response, next: express.NextFunction,
   ) {
     if (!isEmptyString(req.query.path_name)
