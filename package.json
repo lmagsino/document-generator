@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "Document generator service for advance",
   "scripts": {
-    "start": "tsc && node --unhandled-rejections=strict -r dotenv/config ./dist/app.js",
-    "debug": "export DEBUG=* && npm run start",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ignore-path .gitignore --ext .ts ."
+    "build-start": "tsc && node -r dotenv/config ./dist/app.js",
+    "build": "tsc",
+    "start": "node -r dotenv/config ./dist/app.js",
+    "lint": "eslint --ignore-path .gitignore --ext .ts .",
+    "gcp-build": "tsc",
+    "deploy": "gcloud app deploy"
   },
   "author": "",
   "license": "ISC",
@@ -53,3 +55,4 @@
   },
   "homepage": "https://github.com/advance-ph/document-generator#readme"
 }
+
