@@ -14,7 +14,7 @@ Advance's Document Generator
 ## Development Setup
 * Install dependencies: `yarn`
 * Get a copy of `.env` file
-* Run the server: `yarn start`
+* Run the server: `yarn build-start`
 
 ## Sample `.env` file
 ```
