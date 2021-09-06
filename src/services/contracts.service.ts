@@ -25,17 +25,14 @@ class ContractsService {
     return jwt.encode(object, process.env.TOKEN_SECRET!);
   }
 
-  async retrieveBuffer(req: express.Request) {
+  displayPdf(req: express.Request) {
     const decoded: string = jwt.decode(
       req.params.token, process.env.TOKEN_SECRET!,
     );
 
     const compiledHtml: string = DocumentsService.compileHtml(decoded);
-    const fileBase64: any = await DocumentsService.retrieveFileBase64(
-      compiledHtml,
-    );
 
-    return Buffer.from(fileBase64, 'base64');
+    return DocumentsService.createDisplay(compiledHtml);
   }
 }
 

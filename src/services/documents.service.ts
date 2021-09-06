@@ -1,4 +1,3 @@
-import pdf from 'html-pdf';
 import aws from 'aws-sdk';
 import fs from 'fs';
 import ejs from 'ejs';
@@ -60,13 +59,8 @@ class DocumentsService {
     return url;
   }
 
-  async retrieveFileBase64(compiledHtml: string) {
-    const fileBase64 = async (htmlFile: string) => new Promise(((resolve) => {
-      pdf.create(htmlFile, options).toBuffer((_, buffer) => {
-        resolve(buffer.toString('base64'));
-      });
-    }));
-    return fileBase64(compiledHtml);
+  createDisplay(compiledHtml: string) {
+    return wkhtmltopdf(compiledHtml, options);
   }
 
   compileHtml(object: any) {
