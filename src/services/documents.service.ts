@@ -22,9 +22,9 @@ function getFileName(str: String) {
 }
 
 class DocumentsService {
-  async uploadPdf(file: {pathName: string, fileName: string},
+  uploadPdf(file: {pathName: string, fileName: string},
     compiledHtml: string) {
-    const createPdf = async (htmlFile: string) => new Promise(((resolve, reject) => {
+    const createPdf = (htmlFile: string) => new Promise(((resolve, reject) => {
       const doc = wkhtmltopdf(htmlFile, options);
       const params = {
         Key: file.fileName,
@@ -42,7 +42,7 @@ class DocumentsService {
     return createPdf(compiledHtml);
   }
 
-  async retrieveUrl(pathName: string, fileName: string) {
+  retrieveUrl(pathName: string, fileName: string) {
     const url = new Promise(((resolve, reject) => {
       const params = {
         Bucket: pathName,

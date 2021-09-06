@@ -29,9 +29,9 @@ class ContractsController {
     }
   }
 
-  async show(req: express.Request, res: express.Response) {
+  show(req: express.Request, res: express.Response) {
     try {
-      const pdf: any = await ContractsService.displayPdf(req);
+      const pdf: any = ContractsService.displayPdf(req);
 
       res.header('Content-type', 'application/pdf');
       pdf.pipe(res);
