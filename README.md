@@ -31,8 +31,8 @@ PORT = 3030
 
 ### `For Authentication:`
 * Basic Auth
-* Username = CLIENT_ID 
-* Password = CLIENT_SECRET
+* Username = `CLIENT_ID`
+* Password = `CLIENT_SECRET`
 
 ## Endpoints
 ### `POST` /contracts - *Generates PDF and uploads to S3*
