@@ -7,6 +7,12 @@ const LIST_OF_CONTRACTS = [
   'disclosure_statement', 'weekly_disclosure_statement',
   'promissory_note', 'weekly_promissory_note'];
 
+const PARAMS_MISSING = 'Params object not found';
+const TOKEN_FAILED = 'Token Verification Failed';
+const NAME_MISSING = 'Missing path or file name';
+const TYPE_MISSING = 'File type does not exist';
+const PARAMS_OBJECT = 'params';
+
 function paramsList(value: unknown) {
   let params: Array<string>;
   switch (value) {
@@ -52,74 +58,81 @@ function isEmptyString(str: unknown) {
   return (!str || str === '');
 }
 
-function validateParams(params: any) {
-  const errorMessage: string[] = [];
-  const missingParams: string[] = [];
-
+function validateRequiredParams(params: any, errors: any) {
   paramsList(params.type).forEach((item) => {
     if (isEmptyString(params[`${item}`])) {
-      missingParams.push(item);
+      errors.push(`${item} does not exist`);
     }
   });
-
-  if (missingParams.length === 0) {
-    return true;
-  }
-
-  errorMessage.push(`Missing params: ${missingParams.join(', ')}`);
-  return errorMessage.toString();
 }
 
-function validateType(params: any) {
-  if (!(LIST_OF_CONTRACTS.includes(params.type))) {
-    return 'File name does not exist';
+function hasValidDocType(type: string) {
+  return LIST_OF_CONTRACTS.includes(type);
+}
+
+function validateDocType(type: string, errors: any) {
+  if (!hasValidDocType(type)) {
+    errors.push(TYPE_MISSING);
   }
-  return true;
 }
 
 function sendError(res: express.Response, message: string) {
-  res.status(400).send({ error: message });
+  res.status(400).send({ errors: message });
+}
+
+function hasParams(params: any) {
+  return PARAMS_OBJECT in params;
+}
+
+function validateParamsObject(object: any, errors: any) {
+  if (hasParams(object)) {
+    validateDocType(object.params.type, errors);
+    validateRequiredParams(object.params, errors);
+  } else {
+    errors.push(PARAMS_MISSING);
+  }
+}
+
+function hasValidName(query: any) {
+  return !(isEmptyString(query.path) || isEmptyString(query.file));
+}
+
+function validateName(nameQuery: any, errors: any) {
+  if (!hasValidName(nameQuery)) {
+    errors.push(NAME_MISSING);
+  }
 }
 
 class ContractsValidator {
-  async paramsObj(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if ('params' in req.body) {
-      next();
-    } else {
-      res.status(400).send({ error: 'Params object not found' });
-    }
+  validateParams(
+    req: express.Request, res: express.Response, next: express.NextFunction,
+  ) {
+    const errors: any = [];
+
+    const nameQuery = {
+      path: req.body.path_name,
+      file: req.body.file_name,
+    };
+
+    validateParamsObject(req.body, errors);
+    validateName(nameQuery, errors);
+
+    return errors.length > 0 ? sendError(res, errors) : next();
   }
 
-  async pathAndFileName(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (!isEmptyString(req.body.path_name) && !isEmptyString(req.body.file_name)) {
-      next();
-    } else {
-      res.status(400).send({ error: 'Missing path or file name' });
-    }
-  }
+  validateFileAndPathName(
+    req: express.Request, res: express.Response, next: express.NextFunction,
+  ) : void {
+    const errors: any = [];
 
-  async paramsType(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (validateType(req.body.params) === true) {
-      next();
-    } else {
-      res.status(400).send({ error: validateType(req.body.params) });
-    }
-  }
+    const nameQuery = {
+      path: req.query.path_name,
+      file: req.query.file_name,
+    };
 
-  async paramsList(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (validateParams(req.body.params) === true) {
-      next();
-    } else {
-      res.status(400).send({ error: validateParams(req.body.params) });
-    }
-  }
+    validateName(nameQuery, errors);
 
-  async queryFilePath(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (!isEmptyString(req.query.path_name) && !isEmptyString(req.query.file_name)) {
-      next();
-    } else {
-      res.status(400).send({ error: 'Missing path or file name' });
-    }
+    return errors.length > 0 ? sendError(res, errors) : next();
   }
 
   validateToken(
@@ -128,13 +141,13 @@ class ContractsValidator {
     try {
       const decoded = jwt.decode(req.params.token, process.env.TOKEN_SECRET!);
 
-      if ('params' in decoded) {
+      if (hasParams(decoded)) {
         next();
       } else {
-        sendError(res, 'Params object not found');
+        sendError(res, PARAMS_MISSING);
       }
     } catch (e) {
-      sendError(res, 'Token Verification Failed');
+      sendError(res, TOKEN_FAILED);
     }
   }
 }

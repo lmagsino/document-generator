@@ -1,9 +1,17 @@
-import pdf from 'html-pdf';
 import aws from 'aws-sdk';
 import fs from 'fs';
 import ejs from 'ejs';
 
-const options: {} = { format: 'Letter', border: '25mm' };
+const wkhtmltopdf = require('wkhtmltopdf');
+
+const options: {} = {
+  pageSize: 'a4',
+  marginTop: '25mm',
+  marginBottom: '25mm',
+  marginRight: '25mm',
+  marginLeft: '25mm',
+};
+
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -14,29 +22,27 @@ function getFileName(str: String) {
 }
 
 class DocumentsService {
-  async uploadPdf(file: {pathName: string, fileName: string},
+  uploadPdf(file: {pathName: string, fileName: string},
     compiledHtml: string) {
-    const createPdf = async (htmlFile: string) => new Promise(((resolve, reject) => {
-      pdf.create(htmlFile, options).toStream((_, stream) => {
-        const params = {
-          Key: file.fileName,
-          Body: stream,
-          Bucket: file.pathName,
-          ContentType: 'application/pdf',
-        };
+    const createPdf = (htmlFile: string) => new Promise(((resolve, reject) => {
+      const doc = wkhtmltopdf(htmlFile, options);
+      const params = {
+        Key: file.fileName,
+        Body: doc,
+        Bucket: file.pathName,
+        ContentType: 'application/pdf',
+      };
 
-        s3.upload(params, (err: unknown, res: any) => {
-          if (err) {
-            reject(err);
-          } else { resolve(getFileName(res.key)); }
-        });
+      s3.upload(params, (err: unknown, res: any) => {
+        if (err) {
+          reject(err);
+        } else { resolve(getFileName(res.key)); }
       });
     }));
-
     return createPdf(compiledHtml);
   }
 
-  async retrieveUrl(pathName: string, fileName: string) {
+  retrieveUrl(pathName: string, fileName: string) {
     const url = new Promise(((resolve, reject) => {
       const params = {
         Bucket: pathName,
@@ -53,13 +59,8 @@ class DocumentsService {
     return url;
   }
 
-  async retrieveFileBase64(compiledHtml: string) {
-    const fileBase64 = async (htmlFile: string) => new Promise(((resolve) => {
-      pdf.create(htmlFile, options).toBuffer((_, buffer) => {
-        resolve(buffer.toString('base64'));
-      });
-    }));
-    return fileBase64(compiledHtml);
+  createDisplay(compiledHtml: string) {
+    return wkhtmltopdf(compiledHtml, options);
   }
 
   compileHtml(object: any) {

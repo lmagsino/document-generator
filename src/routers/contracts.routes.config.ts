@@ -11,23 +11,17 @@ export default class ContractsRoutes extends CommonRoutesConfig {
 
   configureRoutes() {
     this.app.post('/contracts', AuthService.authenticateRequest, [
-      ContractsValidator.paramsObj,
-      ContractsValidator.pathAndFileName,
-      ContractsValidator.paramsType,
-      ContractsValidator.paramsList,
+      ContractsValidator.validateParams,
       ContractsController.upload,
     ]);
 
     this.app.get('/contracts/url', AuthService.authenticateRequest, [
-      ContractsValidator.queryFilePath,
+      ContractsValidator.validateFileAndPathName,
       ContractsController.retrieveUrl,
     ]);
 
     this.app.post('/contracts/token', AuthService.authenticateRequest, [
-      ContractsValidator.paramsObj,
-      ContractsValidator.pathAndFileName,
-      ContractsValidator.paramsType,
-      ContractsValidator.paramsList,
+      ContractsValidator.validateParams,
       ContractsController.generateToken,
     ]);
 
