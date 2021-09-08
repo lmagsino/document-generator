@@ -1,15 +1,14 @@
 import aws from 'aws-sdk';
 import fs from 'fs';
 import ejs from 'ejs';
-
-const wkhtmltopdf = require('wkhtmltopdf');
+import puppeteer from 'puppeteer';
 
 const options: {} = {
-  pageSize: 'a4',
-  marginTop: '25mm',
-  marginBottom: '25mm',
-  marginRight: '25mm',
-  marginLeft: '25mm',
+  format: 'a4',
+  printBackground: true,
+  margin: {
+    left: '2.5cm', top: '2.5cm', right: '2.5cm', bottom: '2.5cm',
+  },
 };
 
 const s3 = new aws.S3({
@@ -17,26 +16,39 @@ const s3 = new aws.S3({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
-function getFileName(str: String) {
+function getFileName(str: string) {
   return str.substring(str.lastIndexOf('/') + 1);
+}
+
+async function createBuffer(htmlFile: any) {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  await page.emulateMediaType('screen');
+  await page.setContent(htmlFile);
+  const pdf = await page.pdf(options);
+  await browser.close();
+
+  return pdf;
 }
 
 class DocumentsService {
   uploadPdf(file: {pathName: string, fileName: string},
     compiledHtml: string) {
     const createPdf = (htmlFile: string) => new Promise(((resolve, reject) => {
-      const doc = wkhtmltopdf(htmlFile, options);
-      const params = {
-        Key: file.fileName,
-        Body: doc,
-        Bucket: file.pathName,
-        ContentType: 'application/pdf',
-      };
+      createBuffer(htmlFile).then((stream) => {
+        const params = {
+          Key: file.fileName,
+          Body: stream,
+          Bucket: file.pathName,
+          ContentType: 'application/pdf',
+        };
 
-      s3.upload(params, (err: unknown, res: any) => {
-        if (err) {
-          reject(err);
-        } else { resolve(getFileName(res.key)); }
+        s3.upload(params, (err: unknown, res: any) => {
+          if (err) {
+            reject(err);
+          } else { resolve(getFileName(res.key)); }
+        });
       });
     }));
     return createPdf(compiledHtml);
@@ -60,7 +72,10 @@ class DocumentsService {
   }
 
   createDisplay(compiledHtml: string) {
-    return wkhtmltopdf(compiledHtml, options);
+    const displayBuffer = (htmlFile: string) => new Promise(((resolve) => {
+      resolve(createBuffer(htmlFile));
+    }));
+    return displayBuffer(compiledHtml);
   }
 
   compileHtml(object: any) {
