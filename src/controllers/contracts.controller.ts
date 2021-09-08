@@ -29,12 +29,12 @@ class ContractsController {
     }
   }
 
-  show(req: express.Request, res: express.Response) {
+  async show(req: express.Request, res: express.Response) {
     try {
-      const pdf: any = ContractsService.displayPdf(req);
+      const pdf: any = await ContractsService.displayPdf(req);
 
       res.header('Content-type', 'application/pdf');
-      pdf.pipe(res);
+      res.send(pdf);
     } catch (e) {
       res.status(500).send(e.message);
     }

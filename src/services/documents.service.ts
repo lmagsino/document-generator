@@ -2,12 +2,13 @@ import aws from 'aws-sdk';
 import fs from 'fs';
 import ejs from 'ejs';
 import puppeteer from 'puppeteer';
+import { PDFDocument } from 'pdf-lib';
 
 const options: {} = {
   format: 'a4',
   printBackground: true,
   margin: {
-    left: '2.5cm', top: '2.5cm', right: '2.5cm', bottom: '2.5cm',
+    left: '2.5cm', top: '1.5cm', right: '2.5cm', bottom: '2.5cm',
   },
 };
 
@@ -20,7 +21,7 @@ function getFileName(str: string) {
   return str.substring(str.lastIndexOf('/') + 1);
 }
 
-async function createBuffer(htmlFile: any) {
+async function createStream(htmlFile: any) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
@@ -32,22 +33,32 @@ async function createBuffer(htmlFile: any) {
   return pdf;
 }
 
+async function addTitle(pdf: any, title: string) {
+  const pdfLib = await PDFDocument.load(pdf);
+  pdfLib.setTitle(title);
+  const titledPdf = await pdfLib.save();
+
+  return titledPdf;
+}
+
 class DocumentsService {
-  uploadPdf(file: {pathName: string, fileName: string},
+  uploadPdf(file: {pathName: string, fileName: string, title: string},
     compiledHtml: string) {
     const createPdf = (htmlFile: string) => new Promise(((resolve, reject) => {
-      createBuffer(htmlFile).then((stream) => {
-        const params = {
-          Key: file.fileName,
-          Body: stream,
-          Bucket: file.pathName,
-          ContentType: 'application/pdf',
-        };
+      createStream(htmlFile).then((pdf) => {
+        addTitle(pdf, file.title).then((stream) => {
+          const params = {
+            Key: file.fileName,
+            Body: stream,
+            Bucket: file.pathName,
+            ContentType: 'application/pdf',
+          };
 
-        s3.upload(params, (err: unknown, res: any) => {
-          if (err) {
-            reject(err);
-          } else { resolve(getFileName(res.key)); }
+          s3.upload(params, (err: unknown, res: any) => {
+            if (err) {
+              reject(err);
+            } else { resolve(getFileName(res.key)); }
+          });
         });
       });
     }));
@@ -73,7 +84,9 @@ class DocumentsService {
 
   createDisplay(compiledHtml: string) {
     const displayBuffer = (htmlFile: string) => new Promise(((resolve) => {
-      resolve(createBuffer(htmlFile));
+      createStream(htmlFile).then((stream) => {
+        resolve(Buffer.from(stream));
+      });
     }));
     return displayBuffer(compiledHtml);
   }
