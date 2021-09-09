@@ -16,6 +16,16 @@
       .centered {
         text-align: center;
       }
+      .header-font {
+        font-size: 25px;
+        padding-top: 20px;
+      }
+      .margin-right {
+        margin-right: 35px;
+      }
+      .margin-left {
+        margin-left: 20px
+      }
       .compact {
         margin: 0;
       }
@@ -54,13 +64,13 @@
         margin: 0;
       }
       ol {
-        padding-left: 1.3em
+        padding-left: 1.4em
       }
       ol.nested-list {
         padding-left: 2.5em;
         margin-top: 1em;
       }
-      li{
+      li {
         margin-bottom: 1em;
       }
       .section-title {
@@ -94,20 +104,24 @@
         list-style-type: circle;
         margin: 0;
       }
+      ol.events-of-default > li {
+        list-style-type: decimal;
+        padding-left: 0.5em;
+        margin: 0;
+        margin-left: 1em;
+      }
     </style>
   </head>
   <body>
-    <div class="ui container text">
-      <div class="page-header section centered">
-        <h1 class="section-title compact">PROMISSORY NOTE</h1>
-        <p class="compact strong">
-          (this "Note")
-        </p>
-        <p class="strong">PN. No. <%= reference_code %></p>
+    <div class="ui container text margin-right">
+      <div class="page-header section">
+        <h1 class="header-font">PROMISSORY NOTE</h1>
       </div>
       <div class="page-content">
         <div class="section">
-          <p class="right-aligned"> Date: <%= date_signed %></p>
+          <p class="compact">(this "Note")</p>
+          <p>PN. No. <%= reference_code %></p>  
+          <p> Date: <%= date_signed %></p>
           <p>Principal: <%= amount_in_words %> (Php <%= amount %>)</p>
           <p>FOR VALUE RECEIVED, I, <%= full_name %>, of legal age and a resident of <%= address %> (the <strong>"Borrower"</strong>) promise to pay <strong>ADVANCE TECH LENDING INC.</strong> (the <strong>"Lender"</strong>), the principal sum of <%= amount_in_words %> (Php <%= amount %>) (the <strong>"Loan Amount"</strong> or <strong>"Principal"</strong>), together with financing charges as set forth below.</p>
           <p>
@@ -115,23 +129,22 @@
           </p>
         </div>
         <div class="section summary">
-          <p class="section-title strong centered">SUMMARY OF TERMS AND CONDITIONS OF LOAN TRANSACTION</p>
+          <p>SUMMARY OF TERMS AND CONDITIONS OF LOAN TRANSACTION</p>
           <p>For and in consideration of the loan granted to me, I agree to the following:</p>
-          <ol>
+          <ol class="margin-left">
             <li>I hereby authorize (a) my Employer to debit or withdraw an amount representing my Loan payment from my designated employee payroll account on behalf of Advance, (b) my Employer to transfer or remit the said debited or deducted amount to Advance; and (c) for Advance to receive each payment due on each due date.  All payments are to be applied first to the payment of the accrued interest, then to the late payment penalty and late payment charges, when applicable, and lastly, to the balance of outstanding Principal.</li>
             <li>
-              <p>Should I fail to pay the Principal of this Note at maturity or on demand, as the case may be, or any installments thereof or fail to pay any other obligation which I now or in the future owe to the Lender, for any reason whatsoever, then the entire Principal of this Note, including any accrued interests and other charges or penalties due on this Note (the "<strong>Outstanding Amount</strong>"), shall, at the option of the Lender and without necessity of notice to me, immediately become due and payable.
-              </p>
-              <p>Events of Default - Upon the happening of any of the following events, the Lender may at its option, accelerate the maturity of this Note, and the entire Outstanding Amount of this Note shall automatically become due and payable on the immediate pay cycle without demand or notice, likewise without further notice:</p>
-              <ol>
-                <li>any interest or installment is not paid fully on due date;</li>
-                <li>the Borrower dies or becomes insolvent (i.e., could no longer pay the undersigned Borrower’s obligations as they fall due) or any proceeding for dissolution, insolvency, suspension of payment, receivership, voting trust, foreclosure, attachment, garnishment, execution or similar act, is filed or commenced against the undersigned Borrower/s;</li>
-                <li>in case of conviction for a criminal offense with final judgement carrying with it the penalty of civil interdiction affecting the undersigned Borrower;</li>
-                <li>in <span class="strong">case of resignation</span>, termination or severance from employment of the Borrower from his/her employer;</li>
-                <li>in case any collateral promised or given as security for this Note is not delivered in full, or is lost, destroyed or depreciates in value or cannot be immediately enforced;</li>
-                <li>in case any provision of the agreement covering the collateral promised or given as security for the payment of this Note is violated or not complied with;</li>
-                <li>upon the occurrence of any act or event which in the Lender's opinion, results in the impairment of the financial capacity of the Borrower;</li>
-                <li>in case any representation or warranty, covenant or undertaking embodied in this Note, in the Corporate Salary Loan Application Form, or in other documents given by me in connection with the granting of the Loan turns out to be untrue or ceases to be true in any material respect, or is violated or not complied.</li>
+              <p>Should I fail to pay the Principal of this Note at maturity or on demand, as the case may be, or any installments thereof or fail to pay any other obligation which I now or in the future owe to the Lender, for any reason whatsoever, then the entire Principal of this Note, including any accrued interests and other charges or penalties due on this Note (the "<strong>Outstanding Amount</strong>"), shall, at the option of the Lender and without necessity of notice to me, immediately become due and payable.</p>
+              <p>Events of Default - Upon the happening of any of the following events, the Lender may at its option, accelerate the maturity of this Note, and the entire Outstanding Amount of this Note shall automatically become due and payable on the immediate pay cycle without demand or notice:</p>
+              <ol class="events-of-default">
+                <li>Any interest or installment is not paid fully on due date;</li>
+                <li>The Borrower dies or becomes insolvent (i.e., could no longer pay the undersigned Borrower’s obligations as they fall due) or any proceeding for dissolution, insolvency, suspension of payment, receivership, voting trust, foreclosure, attachment, garnishment, execution or similar act, is filed or commenced against the undersigned Borrower/s;</li>
+                <li>In case of conviction for a criminal offense with final judgement carrying with it the penalty of civil interdiction affecting the undersigned Borrower;</li>
+                <li>In case of resignation, termination or severance from employment of the Borrower from his/her employer;</li>
+                <li>In case any collateral promised or given as security for this Note is not delivered in full, or is lost, destroyed or depreciates in value or cannot be immediately enforced;</li>
+                <li>In case any provision of the agreement covering the collateral promised or given as security for the payment of this Note is violated or not complied with;</li>
+                <li>Upon the occurrence of any act or event which in the Lender's opinion, results in the impairment of the financial capacity of the Borrower;</li>
+                <li>In case any representation or warranty, covenant or undertaking embodied in this Note, in the Corporate Salary Loan Application Form, or in other documents given by me in connection with the granting of the Loan turns out to be untrue or ceases to be true in any material respect, or is violated or not complied.</li>
               </ol>
             </li>
             <li>In case of any change in my payday schedule implemented by my employer, I hereby authorize the Lender to alter or modify the Loan Payment Schedule to coincide with my new payday schedule and hereby consent to such adjustment. Prior written notice on the adjustment of the Loan Payment Schedule will be given by the Lender, to take effect on the date indicated therein.</li>
@@ -140,7 +153,7 @@
             <li>
               I likewise hereby agree to pay the total amount incurred by the Lender in connection with the collection of any amount due from me under this Note, including the attorney’s fees, litigation expenses and costs of suit. In addition to the foregoing costs and charges, I further agree to pay by way of liquidated damages, the following amounts:
               <ul class="list-style-circle">
-                <br />
+                <br> <br>
                 <li>ten percent (10%) of the total amount due, including Principal, interest and charges, in case no suit is filed; or</li> <br />
                 <li>twenty-five percent (25%) of total amount due, including Principal, interest and charges, in case a collection suit is filed in court.</li>
               </ul>
@@ -154,13 +167,15 @@
             <li>If any provision of this agreement shall be invalid or unenforceable, the remaining provisions shall not be affected, thereby and every provision hereof, shall be valid and enforceable to the fullest extent permitted by law.</li>
           </ol>
         </div>
-        <div class="section signature centered">
-          <p class="strong">BY ELECTRONICALLY SIGNING THE AGREEMENT, THE BORROWER HAS SIGNIFIED HIS/HER AGREEMENT TO THE TERMS AND CONDITIONS STATED HEREIN.</p>
-          <p class="name underline centered"><%= full_name %></p>
+        <div class="section signature">
+          <p>BY ELECTRONICALLY SIGNING THE AGREEMENT, THE BORROWER HAS SIGNIFIED HIS/HER AGREEMENT TO THE TERMS AND CONDITIONS STATED HEREIN.</p>
+          <br> <br>
+          <p class="name underline"><%= full_name %></p>
           <p class="compact">Name of Borrower</p>
-          <p class="name underline centered"><%= date_signed %></p>
+          <p class="name underline"><%= date_signed %></p>
           <p class="compact">Date</p>
         </div>
+        <br>
         <div class="section payment-schedule">
           <table class="ui table schedule centered unstackable">
             <thead>
