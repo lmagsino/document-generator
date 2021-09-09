@@ -10,8 +10,21 @@
         line-height: 1.4;
         text-align: justify;
       }
-      h1 {
-        font-size: 18px;
+      .header-font{
+        padding-top: 20px;
+        font-size: 30px;
+      }
+      .header-line-height{
+        line-height: 30px;
+      }
+      .content-line-height {
+        line-height: 30px;
+      }
+      .text-line-height {
+        line-height: 18px;
+      }
+      .margin-right {
+        margin-right: 70px;
       }
       h1, h2, h3, h4, h5, h6 {
         margin: 0;
@@ -32,16 +45,11 @@
         min-width: 10em;
       }
       .page-header {
-        margin-bottom: 2em;
+        padding-top: 0.5em;
+        margin-bottom: -2em;
       }
       .page-header p {
-        font-size: 16px;
-      }
-      .section {
-        margin-bottom: 2em;
-      }
-      .page-header .section-title {
-        margin-top: 2em;
+        font-size: 14px;
       }
       .borrower-acknowledgement {
         margin-bottom: 4em;
@@ -97,35 +105,34 @@
         text-align: left;
         margin-bottom: 1em;
       }
+      ul.list-style-decimal > li {
+        list-style-type: decimal;
+      }
     </style>
   </head>
   <body>
     <div class="ui container text">
-      <div class="page-header centered">
-        <h1>ADVANCE TECH LENDING INC.</h1>
-        <p class="strong compact">DISCLOSURE STATEMENT OF LOAN/CREDIT TRANSACTION</p>
-        <p class="strong compact">
-          (As required by RA 3765, Truth in Lending Act)
-        </p>
-      </div>
-      <div class="page-content">
-        <div class="user-details section">
+      <div class="page-header">
+        <h1 class="header-font">ADVANCE TECH LENDING INC.</h1>
+        <div class="header-line-height">
+          <p>DISCLOSURE STATEMENT OF LOAN/CREDIT TRANSACTION</p>
+          <p>(As required by RA 3765, Truth in Lending Act)</p>
           <p>Name of Borrower: <%= full_name %></p>
           <p>Address: <%= address %></p>
         </div>
-        <div class="terms section">
+      </div>
+      <div class="page-content">
+        <div class="terms margin-right">
           <table>
             <tbody>
-              <tr>
+              <tr class="text-line-height">
                 <td>1.</td>
                 <td>Loan Amount/Principal:</td>
                 <td>P <%= amount %></td>
               </tr>
-              <tr>
+              <tr class="text-line-height">
                 <td>2.</td>
                 <td>
-                  Other Charges
-                  <br />
                   Processing Fee:
                   <br />
                   Bank Transfer Fee:
@@ -139,7 +146,6 @@
                   <% } %>
                 </td>
                 <td>
-                  <br />
                   P<%= processing_fee %>
                   <br />
                   P<%= bank_fee %>
@@ -159,17 +165,17 @@
                 </td>
                 <td><%= weekly_loan_term %></td>
               </tr>
-              <tr>
+              <tr class="text-line-height">
                 <td>4.</td>
                 <td colspan="2">
                   Schedule of Payment:
-                  <ol>
+                  <ul class="list-style-decimal">
                     <li>First Payment of P<%= net_amount_per_payment %> due on the Borrower's next payday, provided that the Net Loan Proceeds was disbursed to the Borrower before the internal payroll cut-offs set by the Borrower’s employer. If the loan was disbursed after the internal payroll cut-offs set by the Borrower’s employer, the First Payment will be due on the second payday from the date when the Net Loan Proceeds was disbursed to the Borrower.</li>
                     <li>Successive Installment Payments: Please see Schedule of Payments provided to the Borrower as posted in the Borrower’s Personal Dashboard Account in <a href='https://www.advance.ph'>https://www.advance.ph</a></li>
-                  </ol>
+                  </ul>
                 </td>
               </tr>
-              <tr>
+              <tr class="text-line-height">
                 <td>5.</td>
                 <td colspan="2">
                   Interest Rate:
@@ -181,24 +187,21 @@
                 <td>6.</td>
                 <td colspan="2">
                   Effective Interest Rate Per Loan Term: The effective interest:&nbsp;<%= effective_interest_rate %>
-                  <br />
-                  <div>
-                    The effective interest rate per loan term is higher than the stipulated Interest Rate because of one or more additional charges stated in Item 2, the exact date of disbursement of Net Loan Proceeds and payment of installments.
-                  </div>
+                  <br> <br>
+                  <div>The effective interest rate per loan term is higher than the stipulated Interest Rate because of one or more additional charges stated in Item 2, the exact date of disbursement of Net Loan Proceeds and payment of installments.</div>
                 </td>
               </tr>
-              <tr>
+              <tr class="text-line-height">
                 <td>7.</td>
                 <td colspan="2">
                   Interest Calculation Method:
                   <br />
                   The interest shall accrue during the payment period as specified in the Schedule of Payments. It shall be calculated for each payment period, regardless if a month has more or less than 30 days. Any remaining unpaid portion of the Loan at the end of the term of the Loan including penalty fees, shall also bear an interest at the rate of two and a half percent (2.5%) weekly until the Loan Amount is fully paid, the imposition of which may be waived at the sole discretion of the Lender.
                 </td>
-              </tr>
+              </tr> <br> <br> <br>
               <tr>
-                <td>
-                </td>
-                <td>Conditional Charges That May Be Imposed:</td>
+                <td></td>
+                <td><br>Conditional Charges That May Be Imposed:</td>
               </tr>
               <tr>
                 <td>8.</td>
@@ -209,14 +212,14 @@
             </tbody>
           </table>
         </div>
-        <div class="creditor-certification section">
-          <p class="underline title">CERTIFIED CORRECT:</p>
-          <p class="name">Jaime de los Angeles</p>
+        <div class="creditor-certification section content-line-height">
+          <p>CERTIFIED CORRECT:</p>
+          <p>Jaime de los Angeles</p>
           <p class="position">CEO</p>
-          <p class="strong">ADVANCE TECH LENDING INC.</p>
+          <p>ADVANCE TECH LENDING INC.</p>
           <p>Creditor</p>
         </div>
-        <div class="borrower-acknowledgement section">
+        <div class="borrower-acknowledgement">
           <p class="statement">I acknowledge receipt of a copy of this statement prior to the consummation of the credit transaction and that I understand and fully agree to the terms and conditions thereof.</p>
           <div class="name">
             <p class="underline"><%= full_name %></p>
