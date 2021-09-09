@@ -1,15 +1,15 @@
 import aws from 'aws-sdk';
 import fs from 'fs';
 import ejs from 'ejs';
-
-const wkhtmltopdf = require('wkhtmltopdf');
+import puppeteer from 'puppeteer';
+import { PDFDocument } from 'pdf-lib';
 
 const options: {} = {
-  pageSize: 'a4',
-  marginTop: '25mm',
-  marginBottom: '25mm',
-  marginRight: '25mm',
-  marginLeft: '25mm',
+  format: 'a4',
+  printBackground: true,
+  margin: {
+    left: '2.5cm', top: '1.5cm', right: '2.5cm', bottom: '2.5cm',
+  },
 };
 
 const s3 = new aws.S3({
@@ -17,26 +17,49 @@ const s3 = new aws.S3({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
-function getFileName(str: String) {
+function getFileName(str: string) {
   return str.substring(str.lastIndexOf('/') + 1);
 }
 
+async function createStream(htmlFile: any) {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  await page.emulateMediaType('screen');
+  await page.setContent(htmlFile);
+  const pdf = await page.pdf(options);
+  await browser.close();
+
+  return pdf;
+}
+
+async function addTitle(pdf: any, title: string) {
+  const pdfLib = await PDFDocument.load(pdf);
+  pdfLib.setTitle(title);
+  const titledPdf = await pdfLib.save();
+
+  return titledPdf;
+}
+
 class DocumentsService {
-  uploadPdf(file: {pathName: string, fileName: string},
+  uploadPdf(file: {pathName: string, fileName: string, title: string},
     compiledHtml: string) {
     const createPdf = (htmlFile: string) => new Promise(((resolve, reject) => {
-      const doc = wkhtmltopdf(htmlFile, options);
-      const params = {
-        Key: file.fileName,
-        Body: doc,
-        Bucket: file.pathName,
-        ContentType: 'application/pdf',
-      };
+      createStream(htmlFile).then((pdf) => {
+        addTitle(pdf, file.title).then((stream) => {
+          const params = {
+            Key: file.fileName,
+            Body: stream,
+            Bucket: file.pathName,
+            ContentType: 'application/pdf',
+          };
 
-      s3.upload(params, (err: unknown, res: any) => {
-        if (err) {
-          reject(err);
-        } else { resolve(getFileName(res.key)); }
+          s3.upload(params, (err: unknown, res: any) => {
+            if (err) {
+              reject(err);
+            } else { resolve(getFileName(res.key)); }
+          });
+        });
       });
     }));
     return createPdf(compiledHtml);
@@ -59,8 +82,15 @@ class DocumentsService {
     return url;
   }
 
-  createDisplay(compiledHtml: string) {
-    return wkhtmltopdf(compiledHtml, options);
+  createDisplay(compiledHtml: string, title: string) {
+    const displayBuffer = (htmlFile: string) => new Promise(((resolve) => {
+      createStream(htmlFile).then((pdf) => {
+        addTitle(pdf, title).then((stream) => {
+          resolve(Buffer.from(stream));
+        });
+      });
+    }));
+    return displayBuffer(compiledHtml);
   }
 
   compileHtml(object: any) {

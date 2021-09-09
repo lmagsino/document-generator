@@ -10,6 +10,7 @@ const LIST_OF_CONTRACTS = [
 const PARAMS_MISSING = 'Params object not found';
 const TOKEN_FAILED = 'Token Verification Failed';
 const NAME_MISSING = 'Missing path or file name';
+const DOCUMENT_DESC_MISSING = 'Missing document type or reference code';
 const TYPE_MISSING = 'File type does not exist';
 const PARAMS_OBJECT = 'params';
 
@@ -97,9 +98,19 @@ function hasValidName(query: any) {
   return !(isEmptyString(query.path) || isEmptyString(query.file));
 }
 
+function hasValidDocumentDesc(query: any) {
+  return !(isEmptyString(query.reference_code) || isEmptyString(query.type));
+}
+
 function validateName(nameQuery: any, errors: any) {
   if (!hasValidName(nameQuery)) {
     errors.push(NAME_MISSING);
+  }
+}
+
+function validateDocument(fileQuery: any, errors: any) {
+  if (!hasValidDocumentDesc(fileQuery)) {
+    errors.push(DOCUMENT_DESC_MISSING);
   }
 }
 
@@ -131,6 +142,21 @@ class ContractsValidator {
     };
 
     validateName(nameQuery, errors);
+
+    return errors.length > 0 ? sendError(res, errors) : next();
+  }
+
+  validateDocumentDesc(
+    req: express.Request, res: express.Response, next: express.NextFunction,
+  ) : void {
+    const errors: any = [];
+
+    const docQuery = {
+      reference_code: req.query.reference_code,
+      type: req.query.type,
+    };
+
+    validateDocument(docQuery, errors);
 
     return errors.length > 0 ? sendError(res, errors) : next();
   }

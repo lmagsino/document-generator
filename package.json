@@ -23,11 +23,11 @@
     "express": "^4.17.1",
     "express-basic-auth": "^1.2.0",
     "express-winston": "^4.1.0",
-    "html-pdf": "^3.0.1",
     "jwt-simple": "^0.5.6",
+    "pdf-lib": "^1.16.0",
+    "puppeteer": "^10.2.0",
     "tslint-config-airbnb-base": "^0.3.0",
-    "winston": "^3.3.3",
-    "wkhtmltopdf": "^0.4.0"
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
@@ -56,4 +56,3 @@
   },
   "homepage": "https://github.com/advance-ph/document-generator#readme"
 }
-
