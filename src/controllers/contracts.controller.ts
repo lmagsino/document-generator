@@ -31,7 +31,7 @@ class ContractsController {
 
   async show(req: express.Request, res: express.Response) {
     try {
-      const pdf: any = await ContractsService.displayPdf(req);
+      const pdf: any = await ContractsService.display(req);
 
       res.header('Content-type', 'application/pdf');
       res.send(pdf);

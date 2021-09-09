@@ -44,12 +44,12 @@ async function addTitle(pdf: any, title: string) {
 class DocumentsService {
   uploadPdf(file: {pathName: string, fileName: string, title: string},
     compiledHtml: string) {
-    const createPdf = (htmlFile: string) => new Promise(((resolve, reject) => {
-      createStream(htmlFile).then((pdf) => {
-        addTitle(pdf, file.title).then((stream) => {
+    const uploadPdf = (htmlFile: string) => new Promise(((resolve, reject) => {
+      createStream(htmlFile).then((stream) => {
+        addTitle(stream, file.title).then((pdfStream) => {
           const params = {
             Key: file.fileName,
-            Body: stream,
+            Body: pdfStream,
             Bucket: file.pathName,
             ContentType: 'application/pdf',
           };
@@ -62,7 +62,7 @@ class DocumentsService {
         });
       });
     }));
-    return createPdf(compiledHtml);
+    return uploadPdf(compiledHtml);
   }
 
   retrieveUrl(pathName: string, fileName: string) {
@@ -82,15 +82,15 @@ class DocumentsService {
     return url;
   }
 
-  createDisplay(compiledHtml: string, title: string) {
-    const displayBuffer = (htmlFile: string) => new Promise(((resolve) => {
-      createStream(htmlFile).then((pdf) => {
-        addTitle(pdf, title).then((stream) => {
-          resolve(Buffer.from(stream));
+  retrievePdfBuffer(compiledHtml: string, title: string) {
+    const pdfBuffer = (htmlFile: string) => new Promise(((resolve) => {
+      createStream(htmlFile).then((stream) => {
+        addTitle(stream, title).then((pdfStream) => {
+          resolve(Buffer.from(pdfStream));
         });
       });
     }));
-    return displayBuffer(compiledHtml);
+    return pdfBuffer(compiledHtml);
   }
 
   compileHtml(object: any) {

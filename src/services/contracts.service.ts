@@ -15,10 +15,7 @@ function capitalizeType(str: string) {
 }
 
 function getTitle(params: any) {
-  const referenceCode = params.reference_code;
-  const type = capitalizeType(params.type);
-
-  return `${referenceCode} ${type}`;
+  return `${params.reference_code} ${capitalizeType(params.type)}`;
 }
 
 class ContractsService {
@@ -28,8 +25,11 @@ class ContractsService {
     const fileName: string = String(req.body.file_name);
     const title: string = getTitle(req.body.params);
 
-    return DocumentsService.uploadPdf({ pathName, fileName, title },
-      compiledHtml);
+    const doc = DocumentsService.uploadPdf(
+      { pathName, fileName, title }, compiledHtml,
+    );
+
+    return doc;
   }
 
   retrieveUrl(req: express.Request) {
@@ -46,15 +46,15 @@ class ContractsService {
     return jwt.encode(object, process.env.TOKEN_SECRET!);
   }
 
-  displayPdf(req: express.Request) {
+  display(req: express.Request) {
     const decoded: string = jwt.decode(
       req.params.token, process.env.TOKEN_SECRET!,
     );
 
     const compiledHtml: string = DocumentsService.compileHtml(decoded);
-
     const title: string = getTitle(req.query);
-    return DocumentsService.createDisplay(compiledHtml, title);
+
+    return DocumentsService.retrievePdfBuffer(compiledHtml, title);
   }
 }
 
