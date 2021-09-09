@@ -82,10 +82,12 @@ class DocumentsService {
     return url;
   }
 
-  createDisplay(compiledHtml: string) {
+  createDisplay(compiledHtml: string, title: string) {
     const displayBuffer = (htmlFile: string) => new Promise(((resolve) => {
-      createStream(htmlFile).then((stream) => {
-        resolve(Buffer.from(stream));
+      createStream(htmlFile).then((pdf) => {
+        addTitle(pdf, title).then((stream) => {
+          resolve(Buffer.from(stream));
+        });
       });
     }));
     return displayBuffer(compiledHtml);

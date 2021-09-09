@@ -53,7 +53,8 @@ class ContractsService {
 
     const compiledHtml: string = DocumentsService.compileHtml(decoded);
 
-    return DocumentsService.createDisplay(compiledHtml);
+    const title: string = getTitle(req.query);
+    return DocumentsService.createDisplay(compiledHtml, title);
   }
 }
 
