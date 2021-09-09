@@ -6,7 +6,7 @@ class ContractsController {
     try {
       const pdf: unknown = await ContractsService.upload(req);
       res.status(200).send({ file_name: pdf });
-    } catch (e) {
+    } catch (e: any) {
       res.status(500).send(e.message);
     }
   }
@@ -15,7 +15,7 @@ class ContractsController {
     try {
       const url: unknown = await ContractsService.retrieveUrl(req);
       res.status(200).send({ url });
-    } catch (e) {
+    } catch (e: any) {
       res.status(500).send(e.message);
     }
   }
@@ -24,7 +24,7 @@ class ContractsController {
     try {
       const token: unknown = ContractsService.generateToken(req);
       res.status(200).send({ token });
-    } catch (e) {
+    } catch (e: any) {
       res.status(500).send(e.message);
     }
   }
@@ -35,7 +35,7 @@ class ContractsController {
 
       res.header('Content-type', 'application/pdf');
       res.send(pdf);
-    } catch (e) {
+    } catch (e: any) {
       res.status(500).send(e.message);
     }
   }
