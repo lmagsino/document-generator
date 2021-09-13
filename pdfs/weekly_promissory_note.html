@@ -57,7 +57,6 @@
         margin-bottom: 4em;
       }
       .name, .date {
-        text-align: center;
         margin-bottom: 1em;
       }
       .name p, .date p {
@@ -124,9 +123,7 @@
           <p> Date: <%= date_signed %></p>
           <p>Principal: <%= amount_in_words %> (Php <%= amount %>)</p>
           <p>FOR VALUE RECEIVED, I, <%= full_name %>, of legal age and a resident of <%= address %> (the <strong>"Borrower"</strong>) promise to pay <strong>ADVANCE TECH LENDING INC.</strong> (the <strong>"Lender"</strong>), the principal sum of <%= amount_in_words %> (Php <%= amount %>) (the <strong>"Loan Amount"</strong> or <strong>"Principal"</strong>), together with financing charges as set forth below.</p>
-          <p>
-            [FOR VALUE RECEIVED, I (the <strong>"Borrower"</strong>) promise to pay <strong>ADVANCE TECH LENDING INC.</strong> (the <strong>"Lender"</strong>), the <strong>Loan Amount</strong> or <strong>Principal</strong>, together with <strong>Interest</strong> thereon and financing charges as provided in my <strong>Personal Dashboard Account</strong>.]
-          </p>
+          <p>[FOR VALUE RECEIVED, I (the <strong>"Borrower"</strong>) promise to pay <strong>ADVANCE TECH LENDING INC.</strong> (the <strong>"Lender"</strong>), the <strong>Loan Amount</strong> or <strong>Principal</strong>, together with <strong>Interest</strong> thereon and financing charges as provided in my <strong>Personal Dashboard Account</strong>.]</p>
         </div>
         <div class="section summary">
           <p>SUMMARY OF TERMS AND CONDITIONS OF LOAN TRANSACTION</p>
@@ -198,8 +195,7 @@
               <% if (has_discount === true) { %>
                 <tr>
                   <td>Discount</td>
-                  <td>- P<%= discount %>
-                  </td>
+                  <td>- P<%= discount %></td>
                 </tr>
               <% } %>
               <tr>
