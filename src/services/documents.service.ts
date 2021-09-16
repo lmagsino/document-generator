@@ -1,16 +1,7 @@
 import aws from 'aws-sdk';
 import fs from 'fs';
 import ejs from 'ejs';
-import puppeteer from 'puppeteer';
-import { PDFDocument } from 'pdf-lib';
-
-const options: {} = {
-  format: 'a4',
-  printBackground: true,
-  margin: {
-    left: '2.5cm', top: '1.5cm', right: '2.5cm', bottom: '2.5cm',
-  },
-};
+import PdfService from './pdf.service';
 
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -21,32 +12,13 @@ function getFileName(str: string) {
   return str.substring(str.lastIndexOf('/') + 1);
 }
 
-async function createStream(htmlFile: any) {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-
-  await page.emulateMediaType('screen');
-  await page.setContent(htmlFile);
-  const pdf = await page.pdf(options);
-  await browser.close();
-
-  return pdf;
-}
-
-async function addTitle(pdf: any, title: string) {
-  const pdfLib = await PDFDocument.load(pdf);
-  pdfLib.setTitle(title);
-  const titledPdf = await pdfLib.save();
-
-  return titledPdf;
-}
-
 class DocumentsService {
-  uploadPdf(file: {pathName: string, fileName: string, title: string},
-    compiledHtml: string) {
+  uploadPdf(file: {
+    pathName: string, fileName: string, title: string, compiledHtml: string
+  }, browser: any) {
     const uploadPdf = (htmlFile: string) => new Promise(((resolve, reject) => {
-      createStream(htmlFile).then((stream) => {
-        addTitle(stream, file.title).then((pdfStream) => {
+      PdfService.createStream(htmlFile, browser).then((stream) => {
+        PdfService.addTitle(stream, file.title).then((pdfStream) => {
           const params = {
             Key: file.fileName,
             Body: pdfStream,
@@ -62,7 +34,7 @@ class DocumentsService {
         });
       });
     }));
-    return uploadPdf(compiledHtml);
+    return uploadPdf(file.compiledHtml);
   }
 
   retrieveUrl(pathName: string, fileName: string) {
@@ -82,15 +54,15 @@ class DocumentsService {
     return url;
   }
 
-  retrievePdfBuffer(compiledHtml: string, title: string) {
+  retrievePdfBuffer(html : {compiled: string, title: string}, browser: any) {
     const pdfBuffer = (htmlFile: string) => new Promise(((resolve) => {
-      createStream(htmlFile).then((stream) => {
-        addTitle(stream, title).then((pdfStream) => {
+      PdfService.createStream(htmlFile, browser).then((stream) => {
+        PdfService.addTitle(stream, html.title).then((pdfStream) => {
           resolve(Buffer.from(pdfStream));
         });
       });
     }));
-    return pdfBuffer(compiledHtml);
+    return pdfBuffer(html.compiled);
   }
 
   compileHtml(object: any) {

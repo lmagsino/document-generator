@@ -1,6 +1,7 @@
 import express from 'express';
 import jwt from 'jwt-simple';
 import DocumentsService from './documents.service';
+import PdfService from './pdf.service';
 
 function capitalizeType(str: string) {
   const words: any[] = str.split('_');
@@ -19,14 +20,18 @@ function getTitle(params: any) {
 }
 
 class ContractsService {
-  upload(req: express.Request) {
+  async upload(req: express.Request) {
     const compiledHtml = DocumentsService.compileHtml(req.body);
     const pathName: string = String(req.body.path_name);
     const fileName: string = String(req.body.file_name);
     const title: string = getTitle(req.body.params);
 
+    await PdfService.setBrowser(req);
+
     const doc = DocumentsService.uploadPdf(
-      { pathName, fileName, title }, compiledHtml,
+      {
+        pathName, fileName, title, compiledHtml,
+      }, req.app.locals.browser,
     );
 
     return doc;
@@ -46,15 +51,22 @@ class ContractsService {
     return jwt.encode(object, process.env.TOKEN_SECRET!);
   }
 
-  display(req: express.Request) {
+  async display(req: express.Request) {
     const decoded: string = jwt.decode(
       req.params.token, process.env.TOKEN_SECRET!,
     );
 
-    const compiledHtml: string = DocumentsService.compileHtml(decoded);
-    const title: string = getTitle(req.query);
+    await PdfService.setBrowser(req);
 
-    return DocumentsService.retrievePdfBuffer(compiledHtml, title);
+    const compiled: string = DocumentsService.compileHtml(decoded);
+    const title: string = getTitle(req.query);
+    const htmlParams = { compiled, title };
+
+    const pdfBuffer = DocumentsService.retrievePdfBuffer(
+      htmlParams, req.app.locals.browser,
+    );
+
+    return pdfBuffer;
   }
 }
 
