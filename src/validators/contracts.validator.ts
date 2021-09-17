@@ -10,8 +10,9 @@ const LIST_OF_CONTRACTS = [
 const PARAMS_MISSING = 'Params object not found';
 const TOKEN_FAILED = 'Token Verification Failed';
 const NAME_MISSING = 'Missing path or file name';
-const DOCUMENT_DESC_MISSING = 'Missing document type or reference code';
+const DOCUMENT_DESC_MISSING = 'Missing document title or reference code';
 const TYPE_MISSING = 'File type does not exist';
+const TITLE_MISSING = 'Missing document title';
 const PARAMS_OBJECT = 'params';
 
 function paramsList(value: unknown) {
@@ -99,7 +100,7 @@ function hasValidName(query: any) {
 }
 
 function hasValidDocumentDesc(query: any) {
-  return !(isEmptyString(query.reference_code) || isEmptyString(query.type));
+  return !(isEmptyString(query.reference_code) || isEmptyString(query.title));
 }
 
 function validateName(nameQuery: any, errors: any) {
@@ -111,6 +112,12 @@ function validateName(nameQuery: any, errors: any) {
 function validateDocument(fileQuery: any, errors: any) {
   if (!hasValidDocumentDesc(fileQuery)) {
     errors.push(DOCUMENT_DESC_MISSING);
+  }
+}
+
+function validateTitle(title: String, errors: any) {
+  if (isEmptyString(title)) {
+    errors.push(TITLE_MISSING);
   }
 }
 
@@ -127,6 +134,7 @@ class ContractsValidator {
 
     validateParamsObject(req.body, errors);
     validateName(nameQuery, errors);
+    validateTitle(req.body.title, errors);
 
     return errors.length > 0 ? sendError(res, errors) : next();
   }
@@ -153,7 +161,7 @@ class ContractsValidator {
 
     const docQuery = {
       reference_code: req.query.reference_code,
-      type: req.query.type,
+      title: req.query.title,
     };
 
     validateDocument(docQuery, errors);
