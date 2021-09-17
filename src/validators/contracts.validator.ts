@@ -107,8 +107,8 @@ function validateDocument(fileQuery: any, errors: any) {
   }
 }
 
-function validateTitle(title: String, errors: any) {
-  if (isEmptyString(title)) {
+function validateTitle(titleQuery: any, errors: any) {
+  if (isEmptyString(titleQuery.title)) {
     errors.push(TITLE_MISSING);
   }
 }
@@ -126,7 +126,7 @@ class ContractsValidator {
 
     validateParamsObject(req.body, errors);
     validateName(nameQuery, errors);
-    validateTitle(req.body.title, errors);
+    validateTitle({title: req.body.title}, errors);
 
     return errors.length > 0 ? sendError(res, errors) : next();
   }
@@ -146,17 +146,12 @@ class ContractsValidator {
     return errors.length > 0 ? sendError(res, errors) : next();
   }
 
-  validateDocumentDesc(
+  validateDocumentTitle(
     req: express.Request, res: express.Response, next: express.NextFunction,
   ) : void {
     const errors: any = [];
 
-    const docQuery = {
-      reference_code: req.query.reference_code,
-      title: req.query.title,
-    };
-
-    validateDocument(docQuery, errors);
+    validateTitle({title: req.query.title}, errors);
 
     return errors.length > 0 ? sendError(res, errors) : next();
   }

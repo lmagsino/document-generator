@@ -26,7 +26,7 @@ export default class ContractsRoutes extends CommonRoutesConfig {
     ]);
 
     this.app.get('/contracts/:token', [
-      ContractsValidator.validateDocumentDesc,
+      ContractsValidator.validateDocumentTitle,
       ContractsValidator.validateToken,
       ContractsController.show,
     ]);
