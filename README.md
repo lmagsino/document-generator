@@ -62,3 +62,4 @@ file_name=deduction_authorization_ABCDE1234_2021-08-11_13-26-49-549.pdf
 
 ### `GET` /healthcheck - *Server is accessible*
 ### `GET` /healthcheck/auth - *Authenticated endpoint ~ server is accessible*
+

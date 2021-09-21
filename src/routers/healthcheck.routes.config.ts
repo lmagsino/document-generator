@@ -41,3 +41,4 @@ export default class HealthcheckRoutes extends CommonRoutesConfig {
     return this.app;
   }
 }
+
