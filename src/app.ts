@@ -6,6 +6,7 @@ import * as expressWinston from 'express-winston';
 import cors from 'cors';
 
 import ContractsRoutes from './routers/contracts.routes.config';
+import HealthcheckRoutes from './routers/healthcheck.routes.config';
 import CommonRoutes from './routers/common.routes.config';
 
 const app: express.Application = express();
@@ -29,6 +30,7 @@ expressWinston.responseWhitelist.push('body');
 app.use(expressWinston.logger(loggerOptions));
 
 routes.push(new ContractsRoutes(app));
+routes.push(new HealthcheckRoutes(app));
 
 server.listen(PORT, () => {
   console.log(`Server is up on port ${PORT}`);

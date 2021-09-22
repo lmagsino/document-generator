@@ -34,7 +34,7 @@ PORT = 3030
 * Username = `CLIENT_ID`
 * Password = `CLIENT_SECRET`
 
-## Endpoints
+## Contract Endpoints
 ### `POST` /contracts - *Generates PDF and uploads to S3*
 ### `POST` /contracts/token - *Retrieves token. Use for browser rendering*
 ```
@@ -59,3 +59,8 @@ file_name=deduction_authorization_ABCDE1234_2021-08-11_13-26-49-549.pdf
 ```
 
 ### `GET` /contracts/:token - *Render pdf document to browser*
+
+## Health Check Endpoints
+### `GET` /healthcheck - *Server is accessible*
+### `GET` /healthcheck/auth - *Authenticated endpoint ~ server is accessible*
+
