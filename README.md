@@ -6,6 +6,7 @@ Advance's Document Generator
 * NodeJs
 * ExpressJs
 * AWS-SDK
+* JWT
 
 ## Prerequisites
 * NodeJs
