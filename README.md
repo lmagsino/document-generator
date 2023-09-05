@@ -1,5 +1,4 @@
-# Advance Document Generator
-Advance's Document Generator
+# Document Generator
 
 ## Technologies
 * Typescript
